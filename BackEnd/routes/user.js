@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const authenticateToken = require("./userAuth");
 
 router.post("/signup", async (req, res) => {
   try {
@@ -82,6 +83,43 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal error" });
+  }
+});
+
+router.get("/userInformation", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.headers;
+
+    // Check if ID is provided
+    if (!id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const user = await User.findById(id).select("-password");
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.put("/updateDetails", async (req, res) => {
+  try {
+    const { id } = req.headers;
+    const { name, address, phone } = req.body;
+    const user = await User.findByIdAndUpdate(
+      id,
+      { name, address, phone },
+      { new: true }
+    );
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

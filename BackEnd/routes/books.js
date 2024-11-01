@@ -1,19 +1,22 @@
 const router = require("express").Router();
 const User = require("../model/user");
+const Books = require("../model/book");
 const jwt = require("jsonwebtoken");
 const authenticateToken = require("./userAuth");
 
 router.post("/addnewbook", authenticateToken, async (req, res) => {
   try {
     const { url, title, author, price, des, language } = req.body;
-    const { id } = req.header;
+    const { id } = req.headers;
     const user = await User.findById(id);
-    if (user.role !== admin) {
+
+    if (!user || user.role !== "admin") {
       return res
         .status(401)
-        .send({ message: "You are not authorized to add a new book" });
+        .json({ message: "You are not authorized to add a new book" });
     }
-    const newBook = new Book({
+
+    const newBook = new Books({
       url,
       title,
       author,
@@ -22,6 +25,7 @@ router.post("/addnewbook", authenticateToken, async (req, res) => {
       language,
     });
     await newBook.save();
+    return res.status(201).json({ message: "New book added successfully" });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
@@ -29,26 +33,22 @@ router.post("/addnewbook", authenticateToken, async (req, res) => {
 
 router.put("/updatebook", authenticateToken, async (req, res) => {
   try {
-    const { price, des, language } = req.body;
+    const { price, des, language, bookId } = req.body;
     const { id } = req.headers;
     const user = await User.findById(id);
 
-    // Check if the user exists and has the 'admin' role
     if (!user || user.role !== "admin") {
       return res
         .status(401)
-        .send({ message: "You are not authorized to update a book" });
+        .json({ message: "You are not authorized to update a book" });
     }
 
-    // Find and update the book
-    const { bookId } = req.body; // Assuming book ID is passed in the request body
-    const book = await Book.findByIdAndUpdate(
+    const book = await Books.findByIdAndUpdate(
       bookId,
       { price, des, language },
-      { new: true } // Option to return the updated document
+      { new: true }
     );
 
-    // Check if the book was found and updated
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
@@ -58,24 +58,21 @@ router.put("/updatebook", authenticateToken, async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 router.delete("/deletebook/:bookId", authenticateToken, async (req, res) => {
   try {
-    const { id } = req.headers; // User ID from headers
+    const { id } = req.headers;
     const user = await User.findById(id);
 
-    // Check if the user exists and has the 'admin' role
     if (!user || user.role !== "admin") {
       return res
         .status(401)
         .json({ message: "You are not authorized to delete a book" });
     }
 
-    const { bookId } = req.params; // Book ID from route parameters
+    const { bookId } = req.params;
+    const book = await Books.findByIdAndDelete(bookId);
 
-    // Find and delete the book
-    const book = await Book.findByIdAndDelete(bookId);
-
-    // Check if the book was found and deleted
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
@@ -88,10 +85,11 @@ router.delete("/deletebook/:bookId", authenticateToken, async (req, res) => {
 
 router.get("/allbooks", async (req, res) => {
   try {
-    await Book.find().sort({ createdAt: -1 });
-    res.send(200).json();
+    const books = await Books.find().sort({ createdAt: -1 });
+    return res.status(200).json(books);
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 module.exports = router;

@@ -3,10 +3,16 @@ const app = express();
 require("dotenv").config();
 require("./connection/connection");
 const user = require("./routes/user");
+const books = require("./routes/books");
+const favourite = require("./routes/favourite");
+const cart = require("./routes/cart");
 
 app.use(express.json());
 
 app.use("/api/v1", user);
+app.use("/api/v1", books);
+app.use("/api/v1", favourite);
+app.use("/api/v1", cart);
 
 app.get("/", (req, res) => {
   res.send("Hello baby");

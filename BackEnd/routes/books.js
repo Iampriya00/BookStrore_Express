@@ -86,7 +86,7 @@ router.delete("/deletebook/:bookId", authenticateToken, async (req, res) => {
 router.get("/allbooks", async (req, res) => {
   try {
     const books = await Books.find().sort({ createdAt: -1 });
-    return res.status(200).json(books);
+    return res.status(200).json({ status: "Success", data: "books" });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }

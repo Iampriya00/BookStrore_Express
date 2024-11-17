@@ -1,7 +1,11 @@
 import React from "react";
 
 function Footer() {
-  return <div></div>;
+  return (
+    <div className="p-4 text-center text-white bg-zinc-800">
+      <p>Copyright 2024</p>
+    </div>
+  );
 }
 
 export default Footer;

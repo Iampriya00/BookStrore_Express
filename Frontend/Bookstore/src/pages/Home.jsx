@@ -1,10 +1,14 @@
 import React from "react";
-
+import Banner from "../components/Home/banner";
+import RecentlyAdded from "../components/Home/RecentlyAdded";
 function Home() {
   return (
-    <div>
-      <h1>fuck</h1>
-    </div>
+    <>
+      <div className="px-10 text-white bg-zinc-900 py-7">
+        <Banner />
+        <RecentlyAdded />
+      </div>
+    </>
   );
 }
 

@@ -7,7 +7,7 @@ const authenticateToken = require("./userAuth");
 router.post("/addnewbook", authenticateToken, async (req, res) => {
   try {
     const { url, title, author, price, des, language } = req.body;
-    const { id } = req.headers;
+    const { id } = req.user;
     const user = await User.findById(id);
 
     if (!user || user.role !== "admin") {
@@ -86,7 +86,16 @@ router.delete("/deletebook/:bookId", authenticateToken, async (req, res) => {
 router.get("/allbooks", async (req, res) => {
   try {
     const books = await Books.find().sort({ createdAt: -1 });
-    return res.status(200).json({ status: "Success", data: "books" });
+    return res.status(200).json({ status: "Success", data: books });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.get("/get-recent-books", async (req, res) => {
+  try {
+    const books = await Books.find().sort({ createdAt: -1 }).limit(4);
+    return res.status(200).json({ status: "Success", data: books });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }

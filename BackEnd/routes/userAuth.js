@@ -8,6 +8,7 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).json({ message: "Authentication token required" });
   }
 
+  //Decorator
   jwt.verify(token, "bookStrore7894561230", (err, user) => {
     if (err) {
       return res.status(403).json({ message: "Invalid token" });

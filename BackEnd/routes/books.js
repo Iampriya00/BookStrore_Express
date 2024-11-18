@@ -17,6 +17,7 @@ router.post("/addnewbook", authenticateToken, async (req, res) => {
     }
 
     const newBook = new Books({
+      img,
       url,
       title,
       author,

@@ -102,4 +102,20 @@ router.get("/get-recent-books", async (req, res) => {
   }
 });
 
+router.get("/view-book-details/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const book = await Books.findById(id);
+    if (!book) {
+      res.status(404).json({ message: "Book not found" });
+    } else {
+      res.status(200).json({ message: "Book found", book });
+    }
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

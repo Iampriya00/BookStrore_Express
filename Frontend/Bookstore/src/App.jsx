@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import NavBar from "../src/components/Navbar";
 import Footer from "../src/components/Footer";
 import Home from "./pages/Home";
@@ -13,7 +13,7 @@ import BookDetails from "./components/ViewBookDetails/ViewBook";
 
 function App() {
   return (
-    <Router>
+    <>
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -26,8 +26,8 @@ function App() {
         <Route path="/view-book-details/:id" element={<BookDetails />} />
       </Routes>
       <Footer />
-    </Router>
+    </>
   );
-}
+}  
 
 export default App;

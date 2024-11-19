@@ -5,8 +5,7 @@ const BookCard = ({ data }) => {
     <>
       <div className="bg-white p-4 border border-gray-200 rounded-md">
         <img
-          src={data.coverImage}
-          alt={data.title}
+          src={data.url}
           className="w-full h-48 object-cover mt-2 rounded-md"
         />
         <h3 className="text-xl font-semibold text-black">{data.title}</h3>

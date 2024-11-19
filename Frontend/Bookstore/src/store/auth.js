@@ -11,10 +11,11 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
     },
     changeRole(state, action) {
-      const role = action.payload;
+      state.role = action.payload;
       state.role = role;
     },
   },
 });
-export const authactions = authSlice.action;
+
+export const authActions = authSlice.actions;
 export default authSlice.reducer;

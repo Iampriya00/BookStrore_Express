@@ -7,13 +7,14 @@ function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen((prev) => !prev);
   };
 
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-  if(isLoggedIn === false){
-    navData.splice(3,4)
-  }
+  const filteredNavData = isLoggedIn
+    ? navData
+    : navData.filter((_, index) => index < 3);
+
   return (
     <div className="flex items-center justify-between p-6 bg-zinc-600">
       <div className="flex items-center">
@@ -26,7 +27,7 @@ function Navbar() {
       </div>
 
       <ul className="flex space-x-4">
-        {navData.map((navItem, index) => (
+        {filteredNavData.map((navItem, index) => (
           <li key={index}>
             <a href={navItem.path} className="text-white hover:text-gray-400">
               {navItem.item}

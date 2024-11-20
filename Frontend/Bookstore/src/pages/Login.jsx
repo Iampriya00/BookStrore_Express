@@ -1,19 +1,17 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {authActions} from "../store/auth";
-import {useDispatch} from "react-redux";
 
 function Login() {
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
-  
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +19,6 @@ function Login() {
     const { email, password } = values;
 
     try {
-      
       if (!email.trim() || !password.trim()) {
         alert("Please fill in all the fields");
         return;
@@ -36,21 +33,11 @@ function Login() {
       localStorage.setItem("role", role || "");
 
       alert("Server Response: " + (message || "Login successful"));
+      navigate("/profile")
     } catch (error) {
       console.error("Error during sign-in:", error);
       alert("An error occurred during sign-in. Please try again.");
     }
-    try {
-      // Assuming login is successful, you would dispatch these actions
-      dispatch(authActions.login());
-      dispatch(authActions.changeRole("user")); // or "user" based on your logic
-
-      alert('Login successful');
-    } catch (error) {
-      console.error('Error during login:', error);
-      alert('Login failed');
-    }
-    navigate("/profile")
   };
 
   return (

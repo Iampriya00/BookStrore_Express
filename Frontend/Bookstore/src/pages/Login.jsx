@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch} from "react-redux";
+import { authActions } from "@/store/auth";
 
 function Login() {
   const [values, setValues] = useState({
@@ -37,6 +39,15 @@ function Login() {
     } catch (error) {
       console.error("Error during sign-in:", error);
       alert("An error occurred during sign-in. Please try again.");
+    }
+    try {
+      dispatch(authActions.login());
+      dispatch(authActions.changeRole("user"));
+
+      alert('Login successful');
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('Login failed');
     }
   };
 

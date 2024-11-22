@@ -1,9 +1,7 @@
-import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch} from "react-redux";
-import { authActions } from "@/store/auth";
-
+import { loginservice } from "@/services/authService";
+import { useAppSelector } from "@/store/hooks";
 function Login() {
   const [values, setValues] = useState({
     email: "",
@@ -14,49 +12,32 @@ function Login() {
   };
 
   const navigate = useNavigate();
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const token = useAppSelector((state) => state.auth.token);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { email, password } = values;
-
-    try {
-      if (!email.trim() || !password.trim()) {
-        alert("Please fill in all the fields");
-        return;
-      }
-
-      const response = await axios.post("http://localhost:3000/api/v1/login", values);
-
-      const { _id, token, role, message } = response.data;
-
-      localStorage.setItem("id", _id || "");
-      localStorage.setItem("token", token || "");
-      localStorage.setItem("role", role || "");
-
-      alert("Server Response: " + (message || "Login successful"));
-      navigate("/profile")
-    } catch (error) {
-      console.error("Error during sign-in:", error);
-      alert("An error occurred during sign-in. Please try again.");
+    if (!email.trim() || !password.trim()) {
+      alert("Please fill in all the fields");
+      return;
     }
-    try {
-      dispatch(authActions.login());
-      dispatch(authActions.changeRole("user"));
 
-      alert('Login successful');
-    } catch (error) {
-      console.error('Error during login:', error);
-      alert('Login failed');
-    }
+    await loginservice(values);
   };
-
+  useEffect(() => {
+    if (isLoggedIn && token) {
+      navigate("/profile");
+    }
+  }, [isLoggedIn]);
   return (
     <div className="w-[50%] m-auto pt-[10%] h-[80vh]">
       <h1 className="font-bold py-5 text-3xl">Login</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">Email Address</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Email Address
+          </label>
           <div className="mt-1">
             <input
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -68,7 +49,9 @@ function Login() {
               required
             />
           </div>
-          <label className="block text-sm font-medium text-gray-700 mt-4">Password</label>
+          <label className="block text-sm font-medium text-gray-700 mt-4">
+            Password
+          </label>
           <div className="mt-1">
             <input
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

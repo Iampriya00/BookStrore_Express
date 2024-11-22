@@ -73,9 +73,7 @@ router.post("/login", async (req, res) => {
       expiresIn: "10d",
     });
 
-    res
-      .status(200)
-      .json({ id: existUser._id, role: existUser.role, token: token });
+    res.status(200).json({ user: existUser, token: token });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }

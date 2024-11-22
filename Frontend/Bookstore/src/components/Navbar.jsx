@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import navData from "../utils/navBar";
 import { FaUser } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { logout } from "@/store/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const dispatch = useAppDispatch();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const filteredNavData = isLoggedIn
     ? navData
     : navData.filter((_, index) => index < 3);
@@ -35,25 +38,28 @@ function Navbar() {
           </li>
         ))}
       </ul>
-
-      <div className="relative">
-        <div onClick={toggleDropdown} className="cursor-pointer">
-          <FaUser color="white" size={24} />
-        </div>
-
-        {isDropdownOpen && (
-          <div className="absolute right-0 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
-            <ul>
-              <li className="px-4 py-2 hover:bg-gray-100">
-                <a href="/LogIn">LogIn</a>
-              </li>
-              <li className="px-4 py-2 hover:bg-gray-100">
-                <a href="/SignIn">SignIn</a>
-              </li>
-            </ul>
+      {isLoggedIn ? (
+        <button onClick={() => dispatch(logout())}>LogOut</button>
+      ) : (
+        <div className="relative">
+          <div onClick={toggleDropdown} className="cursor-pointer">
+            <FaUser color="white" size={24} />
           </div>
-        )}
-      </div>
+
+          {isDropdownOpen && (
+            <div className="absolute right-0 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+              <ul>
+                <li className="px-4 py-2 hover:bg-gray-100">
+                  <a href="/LogIn">LogIn</a>
+                </li>
+                <li className="px-4 py-2 hover:bg-gray-100">
+                  <a href="/SignIn">SignIn</a>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

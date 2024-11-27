@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import LogIn from "./pages/LogIn";
 import SignIn from "./pages/SignIn";
 import BookDetails from "./components/ViewBookDetails/ViewBook";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/view-book-details/:id" element={<BookDetails />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
       </Routes>
       <Footer />
     </>
@@ -31,4 +33,3 @@ function App() {
 }
 
 export default App;
-

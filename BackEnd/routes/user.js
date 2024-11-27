@@ -81,11 +81,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/userInformation", authenticateToken, async (req, res) => {
   try {
-    const { id } = req.headers;
-
-    if (!id) {
-      return res.status(400).json({ message: "User ID is required" });
-    }
+    const { id } = req.user;
 
     const user = await User.findById(id).select("-password");
 

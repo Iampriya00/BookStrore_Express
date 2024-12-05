@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import navData from "../utils/navBar";
-import { FaUser } from "react-icons/fa";
+import { FaCartArrowDown, FaUser } from "react-icons/fa";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const dispatch = useAppDispatch();
@@ -32,34 +32,59 @@ function Navbar() {
       <ul className="flex space-x-4">
         {filteredNavData.map((navItem, index) => (
           <li key={index}>
-            <a href={navItem.path} className="text-white hover:text-gray-400">
+            <Link to={navItem.path} className="text-white hover:text-gray-400">
               {navItem.item}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
-      {isLoggedIn ? (
-        <button onClick={() => dispatch(logout())}>LogOut</button>
-      ) : (
-        <div className="relative">
-          <div onClick={toggleDropdown} className="cursor-pointer">
-            <FaUser color="white" size={24} />
-          </div>
 
-          {isDropdownOpen && (
-            <div className="absolute right-0 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
-              <ul>
-                <li className="px-4 py-2 hover:bg-gray-100">
-                  <a href="/LogIn">LogIn</a>
-                </li>
-                <li className="px-4 py-2 hover:bg-gray-100">
-                  <a href="/SignIn">SignIn</a>
-                </li>
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
+      {/* User Section */}
+      <div className="flex items-center space-x-4">
+        {isLoggedIn ? (
+          <button
+            onClick={() => dispatch(logout())}
+            className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+          >
+            Log Out
+          </button>
+        ) : (
+          <div className="relative">
+            <button
+              onClick={toggleDropdown}
+              aria-label="User menu"
+              className="focus:outline-none"
+            >
+              <FaUser color="white" size={24} />
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute right-0 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                <ul>
+                  <li className="px-4 py-2 hover:bg-gray-100">
+                    <Link to="/LogIn">Log In</Link>
+                  </li>
+                  <li className="px-4 py-2 hover:bg-gray-100">
+                    <Link to="/SignIn">Sign Up</Link>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Cart Icon */}
+        <Link to="/cart" className="relative">
+          <FaCartArrowDown
+            size={24}
+            color="white"
+            aria-label="Cart"
+            className="hover:text-gray-400"
+          />
+          <span className="absolute top-[-8px] right-[-8px] flex items-center justify-center bg-red-500 text-white text-xs font-bold h-5 w-5 rounded-full">
+            1
+          </span>
+        </Link>
+      </div>
     </div>
   );
 }

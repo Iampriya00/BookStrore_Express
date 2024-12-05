@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { allBooks } from "@/services/authService"; // Import the service function
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { addToCart } from "@/store/auth/cartSlice";
 
 function AllBooks() {
   // State to hold book data
+  const dispatch = useAppDispatch();
   const booksdata = useAppSelector((state) => state.product);
 
   const fetchBooks = async () => {
@@ -18,6 +20,13 @@ function AllBooks() {
     fetchBooks(); // Fetch books when the component mounts
   }, []);
 
+  function handleAddTOCart(book) {
+    const data = {
+      ...book,
+      quantity: 1,
+    };
+    dispatch(addToCart(data));
+  }
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">All Books Available</h1>
@@ -45,6 +54,13 @@ function AllBooks() {
               <p className="text-sm text-green-600 font-semibold">
                 Price: ${book.price}
               </p>
+              {/* Add to Cart Button */}
+              <button
+                onClick={handleAddTOCart(book)}
+                className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Add to Cart
+              </button>
             </div>
           ))}
         </div>

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { allBooks } from "@/services/authService"; // Import the service function
+import { useAppSelector } from "@/store/hooks";
 
 function AllBooks() {
-  const [booksdata, setBooksdata] = useState([]); // State to hold book data
+  // State to hold book data
+  const booksdata = useAppSelector((state) => state.product);
 
   const fetchBooks = async () => {
     try {
-      const data = await allBooks(); // Call the service function
-      setBooksdata(data); // Update state with the fetched data
+      await allBooks(); // Call the service function
     } catch (error) {
       console.error("Error fetching all books:", error);
     }
@@ -20,7 +21,7 @@ function AllBooks() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">All Books Available</h1>
-      {booksdata.length > 0 ? (
+      {booksdata && booksdata.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {booksdata.map((book, index) => (
             <div

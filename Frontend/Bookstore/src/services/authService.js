@@ -1,6 +1,7 @@
 import store from "@/store";
 import { setAccessToken, setUser } from "@/store/auth/authSlice";
 import axios from "./axios";
+import { setProduct } from "@/store/auth/productSlice";
 export const loginservice = async (values) => {
   try {
     const { data } = await axios.post(
@@ -26,8 +27,9 @@ export const userInformation = async () => {
 
 export const allBooks = async () => {
   try {
-    const response = await axios.get("http://localhost:3000/api/v1/allbooks");
-    return response.data.data;
+    const { data } = await axios.get("http://localhost:3000/api/v1/allbooks");
+    store.dispatch(setProduct(data.data));
+    return data.data;
   } catch (error) {
     console.error("Error in allBooks service:", error);
     throw error;

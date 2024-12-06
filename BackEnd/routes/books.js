@@ -35,8 +35,8 @@ router.post("/addnewbook", authenticateToken, async (req, res) => {
 
 router.put("/updatebook", authenticateToken, async (req, res) => {
   try {
-    const { price, des, language, bookId } = req.body;
-    const { id } = req.headers;
+    const { url, price, des, language, bookId } = req.body;
+    const { id } = req.user;
     const user = await User.findById(id);
 
     if (!user || user.role !== "admin") {
@@ -47,7 +47,7 @@ router.put("/updatebook", authenticateToken, async (req, res) => {
 
     const book = await Books.findByIdAndUpdate(
       bookId,
-      { price, des, language },
+      { url, price, des, language },
       { new: true }
     );
 

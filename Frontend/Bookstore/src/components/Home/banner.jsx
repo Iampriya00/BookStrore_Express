@@ -21,7 +21,7 @@ function banner() {
           </div>
           <div className="rightSide">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Open_book_nae_02.svg/512px-Open_book_nae_02.png"
+              src="https://curlytales.com/wp-content/uploads/2023/08/story_11zon.jpg"
               alt="Book"
               className="w-full h-auto" // Example responsive styling
             />

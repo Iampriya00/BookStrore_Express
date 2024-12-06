@@ -56,7 +56,7 @@ function AllBooks() {
               </p>
               {/* Add to Cart Button */}
               <button
-                onClick={handleAddTOCart(book)}
+                onClick={() => handleAddTOCart(book)}
                 className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 Add to Cart

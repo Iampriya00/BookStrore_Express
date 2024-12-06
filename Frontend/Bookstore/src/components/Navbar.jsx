@@ -4,10 +4,15 @@ import { FaCartArrowDown, FaUser } from "react-icons/fa";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/auth/authSlice";
 import { Link } from "react-router-dom";
+import { clearCart } from "@/store/auth/cartSlice";
 
 function Navbar() {
   const dispatch = useAppDispatch();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const cart = useAppSelector((state) => state.cart);
+  // console.log(cart[0].quantity);
+
+  const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -43,7 +48,10 @@ function Navbar() {
       <div className="flex items-center space-x-4">
         {isLoggedIn ? (
           <button
-            onClick={() => dispatch(logout())}
+            onClick={() => {
+              dispatch(logout());
+              dispatch(clearCart());
+            }}
             className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
           >
             Log Out
@@ -81,7 +89,7 @@ function Navbar() {
             className="hover:text-gray-400"
           />
           <span className="absolute top-[-8px] right-[-8px] flex items-center justify-center bg-red-500 text-white text-xs font-bold h-5 w-5 rounded-full">
-            1
+            {totalQuantity}
           </span>
         </Link>
       </div>

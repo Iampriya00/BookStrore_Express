@@ -17,7 +17,6 @@ router.post("/addnewbook", authenticateToken, async (req, res) => {
     }
 
     const newBook = new Books({
-      img,
       url,
       title,
       author,
@@ -28,6 +27,8 @@ router.post("/addnewbook", authenticateToken, async (req, res) => {
     await newBook.save();
     return res.status(201).json({ message: "New book added successfully" });
   } catch (error) {
+    console.log(error);
+
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });

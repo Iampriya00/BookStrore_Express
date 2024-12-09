@@ -23,10 +23,11 @@ function AllBooks() {
   function handleAddTOCart(book) {
     const data = {
       ...book,
-      quantity: 1,
+      quantity: 1, // Set the quantity to 1 when adding a new book
     };
-    dispatch(addToCart(data));
+    dispatch(addToCart(data)); // Dispatch the action to add the book to the cart
   }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">All Books Available</h1>

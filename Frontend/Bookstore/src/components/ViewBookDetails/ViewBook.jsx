@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useAppDispatch } from "@/store/hooks";
+import { addToCart } from "@/store/auth/cartSlice";
 
 const ViewBook = () => {
   const [bookData, setBookData] = useState(null);
   const { id } = useParams();
-
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -20,6 +22,14 @@ const ViewBook = () => {
 
     if (id) fetchBooks();
   }, [id]);
+
+  function handleAddTOCart(book) {
+    const data = {
+      ...book,
+      quantity: 1,
+    };
+    dispatch(addToCart(data));
+  }
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">Book Details</h1>
@@ -41,7 +51,10 @@ const ViewBook = () => {
             <p className="text-gray-700 mb-4">{bookData.des}</p>
             <p className="text-gray-600">Language: {bookData.language}</p>
             <p className="text-lg font-bold my-4">Price: ${bookData.price}</p>
-            <button className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">
+            <button
+              onClick={() => handleAddTOCart()}
+              className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600"
+            >
               Add to Cart
             </button>
           </div>

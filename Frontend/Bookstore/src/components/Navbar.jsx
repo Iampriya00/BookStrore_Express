@@ -14,6 +14,9 @@ function Navbar() {
 
   const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
+  console.log(cart);
+  console.log(totalQuantity);
+
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };

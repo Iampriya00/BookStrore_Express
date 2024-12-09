@@ -11,21 +11,37 @@ const cartSlice = createSlice({
 
       // Check if the book is already in the cart
       const existingBookIndex = state.findIndex(
-        (item) => item._id === bookToAdd._id // Assuming `id` is a unique identifier
+        (item) => item._id === bookToAdd._id // Assuming `_id` is a unique identifier
       );
 
       if (existingBookIndex !== -1) {
-        // If the book is already in the cart, increase the quantity
-        state[existingBookIndex].quantity += bookToAdd.quantity;
+        // If the book is already in the cart, increase the quantity by 1
+        state[existingBookIndex].quantity += 1;
       } else {
-        // If the book is not in the cart, add it
+        // If the book is not in the cart, add it with quantity 1
         state.push(bookToAdd);
       }
     },
 
-    clearCart: () => initialState,
+    updateCart: (state, action) => {
+      const { id, quantity } = action.payload;
+
+      const bookToUpdate = state.find((item) => item._id === id);
+
+      if (bookToUpdate) {
+        bookToUpdate.quantity = quantity;
+      }
+    },
+    deleteFromCart: (state, action) => {
+      const idToDelete = action.payload;
+      return state.filter((item) => item._id !== idToDelete); // Remove item by _id
+    },
+
+    clearCart: () => {
+      return [];
+    },
   },
 });
 
-export const { addToCart, clearCart } = cartSlice.actions;
+export const { addToCart, updateCart, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

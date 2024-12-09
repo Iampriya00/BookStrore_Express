@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { useAppDispatch } from "@/store/hooks";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/auth/cartSlice";
 
 const ViewBook = () => {
   const [bookData, setBookData] = useState(null);
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -23,13 +25,17 @@ const ViewBook = () => {
     if (id) fetchBooks();
   }, [id]);
 
-  function handleAddTOCart(book) {
-    const data = {
-      ...book,
-      quantity: 1,
-    };
-    dispatch(addToCart(data));
-  }
+  const handleAddTOCart = (book) => {
+    if (!isLoggedIn) {
+      navigate("/LogIn");
+    } else {
+      const data = {
+        ...book,
+        quantity: 1,
+      };
+      dispatch(addToCart(data));
+    }
+  };
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">Book Details</h1>

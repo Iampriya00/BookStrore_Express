@@ -1,49 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { updateCart } from "@/store/auth/cartSlice";
+import { clearCart, deleteFromCart, updateCart } from "@/store/auth/cartSlice";
+import { MdDelete } from "react-icons/md";
 
 function Cart() {
   const dispatch = useAppDispatch();
-  const booksdata = useAppSelector((state) => state.product);
+  const cartData = useAppSelector((state) => state.cart);
 
-  const [cartItems, setCartItems] = useState(
-    booksdata.map((item) => ({ ...item, quantity: 1 }))
+  const totalPrice = cartData.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
   );
-
-  const handleIncrease = (id) => {
-    const updatedCart = cartItems.map((item) =>
-      item._id === id ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    setCartItems(updatedCart);
-    dispatch(updateCart(updatedCart));
+  const handleIncrease = (id, currentQuantity) => {
+    dispatch(updateCart({ id, quantity: currentQuantity + 1 }));
   };
 
-  const handleDecrease = (id) => {
-    const updatedCart = cartItems
-      .map((item) => {
-        if (item._id === id && item.quantity > 1) {
-          return { ...item, quantity: item.quantity - 1 };
-        } else if (item._id === id && item.quantity === 1) {
-          dispatch(deleteFromCart(id)); // Dispatch delete action
-          return null; // Remove the item from updatedCart
-        }
-        return item;
-      })
-      .filter((item) => item !== null); // Filter out deleted items (those that returned null)
-
-    setCartItems(updatedCart); // Update local state
-    dispatch(updateCart(updatedCart)); // Update Redux state
+  const handleDecrease = (id, currentQuantity) => {
+    if (currentQuantity > 0) {
+      dispatch(updateCart({ id, quantity: currentQuantity - 1 }));
+    }
   };
 
-  const getTotalPrice = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-  };
   const handleClearCart = () => {
     dispatch(clearCart());
   };
+  function handleDeleteProduct(id) {
+    dispatch(deleteFromCart({ id }));
+  }
   return (
     <div style={{ padding: "20px" }}>
       <div className="flex justify-between m-6">
@@ -57,9 +40,9 @@ function Cart() {
       </div>
 
       <div>
-        {cartItems.map((item) => (
+        {cartData.map((item, idx) => (
           <div
-            key={item.id}
+            key={idx}
             style={{
               display: "flex",
               alignItems: "center",
@@ -78,16 +61,9 @@ function Cart() {
               <h3>{item.title}</h3>
               <p>Price: ₹{item.price.toFixed(2)}</p>
             </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "15px",
-              }}
-            >
+            <div className="flex items-center justify-center gap-4">
               <button
-                onClick={() => handleDecrease(item._id)}
+                onClick={() => handleDecrease(item._id, item.quantity)}
                 style={{
                   backgroundColor: "#f2f2f2",
                   border: "1px solid #ccc",
@@ -118,7 +94,7 @@ function Cart() {
                 {item.quantity}
               </span>
               <button
-                onClick={() => handleIncrease(item._id)}
+                onClick={() => handleIncrease(item._id, item.quantity)}
                 style={{
                   backgroundColor: "#f2f2f2",
                   border: "1px solid #ccc",
@@ -137,6 +113,9 @@ function Cart() {
               >
                 +
               </button>
+              <button onClick={() => handleDeleteProduct(item._id)}>
+                <MdDelete />
+              </button>
             </div>
 
             <div style={{ marginLeft: "20px" }}>
@@ -145,7 +124,7 @@ function Cart() {
           </div>
         ))}
       </div>
-      <h2 className="text-end">Grand Total: ₹{getTotalPrice()}</h2>
+      <h2 className="text-end">Grand Total: ₹{totalPrice}</h2>
     </div>
   );
 }

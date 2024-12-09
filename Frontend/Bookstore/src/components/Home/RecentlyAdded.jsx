@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import BookCard from "../BookCard/BookCard";
 import { addToCart } from "@/store/auth/cartSlice";
 
@@ -9,6 +9,8 @@ const RecentlyAdded = () => {
   const [recentlyAdded, setRecentlyAdded] = useState([]);
   const [error, setError] = useState(null);
   const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchRecentBooks = async () => {
       try {
@@ -27,11 +29,15 @@ const RecentlyAdded = () => {
   }, []);
 
   function handleAddTOCart(book) {
-    const data = {
-      ...book,
-      quantity: 1, // Set the quantity to 1 when adding a new book
-    };
-    dispatch(addToCart(data)); // Dispatch the action to add the book to the cart
+    if (!isLoggedIn) {
+      navigate("/LogIn");
+    } else {
+      const data = {
+        ...book,
+        quantity: 1, // Set the quantity to 1 when adding a new book
+      };
+      dispatch(addToCart(data)); // Dispatch the action to add the book to the cart
+    }
   }
 
   return (

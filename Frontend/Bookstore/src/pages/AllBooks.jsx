@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { allBooks } from "@/services/authService"; // Import the service function
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/auth/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 function AllBooks() {
   // State to hold book data
   const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const booksdata = useAppSelector((state) => state.product);
-
+  const navigate = useNavigate();
   const fetchBooks = async () => {
     try {
       await allBooks(); // Call the service function
@@ -21,13 +23,16 @@ function AllBooks() {
   }, []);
 
   function handleAddTOCart(book) {
-    const data = {
-      ...book,
-      quantity: 1, // Set the quantity to 1 when adding a new book
-    };
-    dispatch(addToCart(data)); // Dispatch the action to add the book to the cart
+    if (!isLoggedIn) {
+      navigate("/LogIn");
+    } else {
+      const data = {
+        ...book,
+        quantity: 1, // Set the quantity to 1 when adding a new book
+      };
+      dispatch(addToCart(data)); // Dispatch the action to add the book to the cart
+    }
   }
-
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">All Books Available</h1>

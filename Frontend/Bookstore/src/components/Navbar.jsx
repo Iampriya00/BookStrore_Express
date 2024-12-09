@@ -10,12 +10,8 @@ function Navbar() {
   const dispatch = useAppDispatch();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const cart = useAppSelector((state) => state.cart);
-  // console.log(cart[0].quantity);
 
   const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
-
-  console.log(cart);
-  console.log(totalQuantity);
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -84,7 +80,7 @@ function Navbar() {
         )}
 
         {/* Cart Icon */}
-        <Link to="/cart" className="relative">
+        <Link to={isLoggedIn ? "/cart" : "/LogIn"} className="relative">
           <FaCartArrowDown
             size={24}
             color="white"

@@ -53,12 +53,6 @@ const RecentlyAdded = () => {
                 <Link to={`/view-book-details/${book._id}`}>
                   <BookCard data={book} />
                 </Link>
-                <button
-                  onClick={() => handleAddTOCart(book)}
-                  className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Add to Cart
-                </button>
               </div>
             ))
           : !error && (

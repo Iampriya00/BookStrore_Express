@@ -95,14 +95,14 @@ router.get("/userInformation", authenticateToken, async (req, res) => {
   }
 });
 
-router.put("/updateDetails", authenticateToken, async (req, res) => {
+router.post("/updateDetails", authenticateToken, async (req, res) => {
   try {
-    const { id } = req.headers;
-    const { username, address, phone } = req.body;
+    const { id } = req.user;
+    const { avatar, username, address, phone } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { username, address, phone },
+      { avatar, username, address, phone },
       { new: true }
     ).select("-password");
 
@@ -115,6 +115,7 @@ router.put("/updateDetails", authenticateToken, async (req, res) => {
       user: updatedUser,
     });
   } catch (error) {
+    console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });

@@ -11,6 +11,7 @@ import LogIn from "./pages/LogIn";
 import SignIn from "./pages/SignIn";
 import BookDetails from "./components/ViewBookDetails/ViewBook";
 import AdminDashboard from "./pages/AdminDashboard";
+import Settings from "./pages/settings";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/view-book-details/:id" element={<BookDetails />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
       <Footer />
     </>

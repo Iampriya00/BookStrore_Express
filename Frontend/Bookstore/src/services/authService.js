@@ -1,5 +1,5 @@
 import store from "@/store";
-import { setAccessToken, setUser } from "@/store/auth/authSlice";
+import { editUser, setAccessToken, setUser } from "@/store/auth/authSlice";
 import axios from "./axios";
 import { setProduct } from "@/store/auth/productSlice";
 export const loginservice = async (values) => {
@@ -27,11 +27,22 @@ export const userInformation = async () => {
 
 export const allBooks = async () => {
   try {
-    const { data } = await axios.get("http://localhost:3000/api/v1/allbooks");
+    const { data } = await axios.get("/allbooks");
     store.dispatch(setProduct(data.data));
     return data.data;
   } catch (error) {
     console.error("Error in allBooks service:", error);
     throw error;
+  }
+};
+
+export const editUserDetails = async () => {
+  try {
+    const response = await axios.post("/updateDetails");
+    const updatedUser = response.data.user;
+    store.dispatch(editUser(updatedUser));
+    return updatedUser;
+  } catch (error) {
+    console.error("Can't Update User details:", error);
   }
 };

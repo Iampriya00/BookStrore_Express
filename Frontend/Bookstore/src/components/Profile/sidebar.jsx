@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -10,20 +10,14 @@ const Sidebar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to="/profile/orders"
-          className="block text-white hover:text-gray-300"
-        >
+        <NavLink to="/orders" className="block text-white hover:text-gray-300">
           Orders
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to="/profile/settings"
-          className="block text-white hover:text-gray-300"
-        >
+        <Link to="/settings" className="block text-white hover:text-gray-300">
           Account Settings
-        </NavLink>
+        </Link>
       </li>
     </ul>
   );

@@ -38,18 +38,6 @@ function Settings() {
     },
   });
 
-  useEffect(() => {
-    if (user) {
-      form.reset({
-        name: user.name,
-        email: user.email,
-        address: user.address,
-        phone: user.phone,
-        image: user.avatar,
-      });
-    }
-  }, [user, form]);
-
   // Handle form submission
   const handleSubmit = async (data) => {
     // console.log(data);

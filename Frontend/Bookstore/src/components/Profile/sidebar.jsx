@@ -14,7 +14,7 @@ const Sidebar = () => {
       {/* Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className="tab:hidden p-2 bg-gray-800 text-white rounded-md focus:outline-none"
+        className="tablet:hidden p-2 bg-gray-800 text-white rounded-md focus:outline-none"
       >
         <GiHamburgerMenu />
       </button>
@@ -23,7 +23,7 @@ const Sidebar = () => {
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } tab:relative tab:left-[-30px] tab:translate-x-0 w-64 bg-gray-800 text-white p-6 transition-transform duration-300 ease-in-out`}
+        } tablet:relative tablet:left-[-30px] tablet:translate-x-0 w-64 bg-gray-800 text-white p-6 transition-transform duration-300 ease-in-out`}
       >
         <ul className="space-y-4">
           <li>

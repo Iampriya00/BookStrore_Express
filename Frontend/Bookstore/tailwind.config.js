@@ -52,7 +52,8 @@ export default {
         },
       },
       screens: {
-        tab: { min: "991px" },
+        tab: { max: "991px" },
+        tablet: { min: "992px" },
       },
     },
   },

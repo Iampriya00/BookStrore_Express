@@ -1,5 +1,5 @@
 import store from "@/store";
-import { editUser, setAccessToken, setUser } from "@/store/auth/authSlice";
+import { setAccessToken, setUser } from "@/store/auth/authSlice";
 import axios from "./axios";
 import { setProduct } from "@/store/auth/productSlice";
 export const loginservice = async (values) => {
@@ -36,11 +36,11 @@ export const allBooks = async () => {
   }
 };
 
-export const editUserDetails = async () => {
+export const editUserDetails = async (data) => {
   try {
-    const response = await axios.post("/updateDetails");
+    const response = await axios.post("/updateDetails", data);
     const updatedUser = response.data.user;
-    store.dispatch(editUser(updatedUser));
+    store.dispatch(setUser(updatedUser));
     return updatedUser;
   } catch (error) {
     console.error("Can't Update User details:", error);

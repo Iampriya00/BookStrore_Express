@@ -7,14 +7,18 @@ import "./index.css";
 import { PersistGate } from "redux-persist/integration/react";
 import App from "./App";
 import store, { persistor } from "./store"; // Ensure store is imported correctly
+import { QueryClientProvider } from "react-query";
+import queryClient from "./utils/react-query";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Router>
-          <App />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router>
+            <App />
+          </Router>
+        </QueryClientProvider>
       </PersistGate>
     </Provider>
   </StrictMode>

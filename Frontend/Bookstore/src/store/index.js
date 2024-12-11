@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "./auth/authSlice";
 import productReducer from "./auth/productSlice";
 import cartReducer from "./auth/cartSlice";
+import bookReducer from "./auth/bookSlice";
 import createSagaMiddleware from "redux-saga";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "./storage";
@@ -11,6 +12,7 @@ const reducers = combineReducers({
   auth: authReducer,
   product: productReducer,
   cart: cartReducer,
+  book: bookReducer,
 });
 
 const persistedReducers = persistReducer(

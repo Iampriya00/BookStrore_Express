@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useAppSelector } from "@/store/hooks";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { role } = useAppSelector((state) => state.auth.user);
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -50,6 +51,16 @@ const Sidebar = () => {
               Account Settings
             </Link>
           </li>
+          {role === "admin" && (
+            <li>
+              <Link
+                to="/addnewbook"
+                className="block text-white hover:text-gray-300"
+              >
+                Add New Book
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
 

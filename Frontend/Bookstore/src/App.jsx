@@ -12,6 +12,8 @@ import SignIn from "./pages/SignIn";
 import BookDetails from "./components/ViewBookDetails/ViewBook";
 import AdminDashboard from "./pages/AdminDashboard";
 import Settings from "./pages/settings";
+import Addnewbook from "./pages/Addnewbook";
+import Editbook from "./pages/Editbook";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         <Route path="/view-book-details/:id" element={<BookDetails />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/addnewbook" element={<Addnewbook />} />
+        <Route path="/editbook/:id" element={<Editbook />} />
       </Routes>
       <Footer />
     </>

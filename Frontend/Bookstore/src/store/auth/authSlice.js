@@ -8,6 +8,7 @@ const initialState = {
     address: "",
     phone: "",
     avatar: "",
+    role: "",
   },
 };
 const authSlice = createSlice({

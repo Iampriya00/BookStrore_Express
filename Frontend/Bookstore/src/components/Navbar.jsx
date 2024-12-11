@@ -5,12 +5,14 @@ import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/auth/authSlice";
 import { Link } from "react-router-dom";
 import { clearCart } from "@/store/auth/cartSlice";
+import { handleLogout } from "@/services/authService";
 
 function Navbar() {
   const dispatch = useAppDispatch();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const cart = useAppSelector((state) => state.cart);
-
+  const { role } = useAppSelector((state) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
   const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
   const toggleDropdown = () => {
@@ -32,25 +34,43 @@ function Navbar() {
         />
         <p className="text-2xl font-bold text-white">BookHeaven</p>
       </div>
+      <div>
+        <ul className="flex space-x-4">
+          {filteredNavData.map((navItem, index) => (
+            <li key={index}>
+              <Link
+                to={navItem.path}
+                className="text-white hover:text-gray-400"
+              >
+                {navItem.item}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-      <ul className="flex space-x-4">
-        {filteredNavData.map((navItem, index) => (
-          <li key={index}>
-            <Link to={navItem.path} className="text-white hover:text-gray-400">
-              {navItem.item}
-            </Link>
-          </li>
-        ))}
-      </ul>
-
+      <div>
+        {role === "user" && (
+          <Link to={"/profile"} className="bg-red-600 text-white p-2 rounded">
+            {user.username} Profile
+          </Link>
+        )}
+      </div>
+      <div>
+        {role === "admin" && (
+          <Link
+            to={"/adminDashboard"}
+            className="bg-red-600 text-white p-2 rounded"
+          >
+            {user.username}Profile
+          </Link>
+        )}
+      </div>
       {/* User Section */}
       <div className="flex items-center space-x-4">
         {isLoggedIn ? (
           <button
-            onClick={() => {
-              dispatch(logout());
-              dispatch(clearCart());
-            }}
+            onClick={() => handleLogout()}
             className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
           >
             Log Out

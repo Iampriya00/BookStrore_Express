@@ -1,5 +1,5 @@
 import { editUserDetails } from "@/services/authService";
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,9 +40,8 @@ function Settings() {
 
   // Handle form submission
   const handleSubmit = async (data) => {
-    // console.log(data);
+    console.log(data);
 
-    // Send the updated user data to the backend
     await editUserDetails({
       avatar: data.image,
       username: data.name,

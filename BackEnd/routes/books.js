@@ -33,9 +33,9 @@ router.post("/addnewbook", authenticateToken, async (req, res) => {
   }
 });
 
-router.put("/updatebook", authenticateToken, async (req, res) => {
+router.post("/updatebook", authenticateToken, async (req, res) => {
   try {
-    const { url, price, des, language, bookId } = req.body;
+    const { url, price, des, language, bookId, title, author } = req.body;
     const { id } = req.user;
     const user = await User.findById(id);
 
@@ -47,7 +47,7 @@ router.put("/updatebook", authenticateToken, async (req, res) => {
 
     const book = await Books.findByIdAndUpdate(
       bookId,
-      { url, price, des, language },
+      { url, price, des, language, title },
       { new: true }
     );
 

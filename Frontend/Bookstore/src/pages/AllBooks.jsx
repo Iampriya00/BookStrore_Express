@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { allBooks } from "@/services/authService"; // Import the service function
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/auth/cartSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { buttonVariants } from "@/components/ui/button";
+import { FaRegEdit } from "react-icons/fa";
+import { cn } from "@/lib/utils";
+import { Pointer } from "lucide-react";
 
 function AllBooks() {
   // State to hold book data
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const { role } = useAppSelector((state) => state.auth.user);
   const booksdata = useAppSelector((state) => state.product);
   const navigate = useNavigate();
   const fetchBooks = async () => {
@@ -35,7 +40,17 @@ function AllBooks() {
   }
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">All Books Available</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold mb-4">All Books Available</h1>
+        {role === "admin" && (
+          <Link
+            to={"/addnewbook"}
+            className={cn(buttonVariants({ variant: "default" }))}
+          >
+            Add Books
+          </Link>
+        )}
+      </div>
       {booksdata && booksdata.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {booksdata.map((book, index) => (
@@ -48,19 +63,28 @@ function AllBooks() {
                 alt={book.title}
                 className="w-full h-48 object-cover rounded-md mb-4"
               />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                {book.title}
-              </h3>
-              <p className="text-sm text-gray-600 mb-1">
-                Author: {book.author}
-              </p>
-              <p className="text-sm text-gray-500 mb-1">
-                Added on: {book.dateAdded}
-              </p>
-              <p className="text-sm text-green-600 font-semibold">
-                Price: ${book.price}
-              </p>
-              {/* Add to Cart Button */}
+              <div className="flex justify-between">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    {book.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Author: {book.author}
+                  </p>
+                  <p className="text-sm text-gray-500 mb-1">
+                    Added on: {book.dateAdded}
+                  </p>
+                  <p className="text-sm text-green-600 font-semibold">
+                    Price: ${book.price}
+                  </p>
+                </div>
+                {role === "admin" && (
+                  <Link to={`/editbook/${book._id}`}>
+                    <FaRegEdit style={{ cursor: "pointer" }} />
+                  </Link>
+                )}
+              </div>
+
               <button
                 onClick={() => handleAddTOCart(book)}
                 className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

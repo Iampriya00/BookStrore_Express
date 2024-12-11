@@ -1,7 +1,10 @@
 import store from "@/store";
-import { setAccessToken, setUser } from "@/store/auth/authSlice";
+import { logout, setAccessToken, setUser } from "@/store/auth/authSlice";
 import axios from "./axios";
-import { setProduct } from "@/store/auth/productSlice";
+import { clearProduct, setProduct } from "@/store/auth/productSlice";
+import { clearBook, setBook } from "@/store/auth/bookSlice";
+import { clearCart } from "@/store/auth/cartSlice";
+
 export const loginservice = async (values) => {
   try {
     const { data } = await axios.post(
@@ -14,6 +17,13 @@ export const loginservice = async (values) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const handleLogout = () => {
+  store.dispatch(logout());
+  store.dispatch(clearBook());
+  store.dispatch(clearCart());
+  store.dispatch(clearProduct());
 };
 
 export const userInformation = async () => {
@@ -44,5 +54,30 @@ export const editUserDetails = async (data) => {
     return updatedUser;
   } catch (error) {
     console.error("Can't Update User details:", error);
+  }
+};
+
+export const addNewBook = async (data) => {
+  try {
+    const resp = await axios.post("/addnewbook", data);
+    alert(resp.data.message);
+    return resp.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getBookDetailsByID = async (id) => {
+  const { data } = await axios.get(`/view-book-details/${id}`);
+  return data;
+};
+
+export const editBookDetails = async (data) => {
+  try {
+    const { data: res } = await axios.post("/updatebook", data);
+
+    return res.books;
+  } catch (error) {
+    console.log(error);
   }
 };

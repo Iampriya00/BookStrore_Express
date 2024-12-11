@@ -1,6 +1,7 @@
 import store from "@/store";
 import { logout } from "@/store/auth/authSlice";
 import _axios from "axios";
+import { handleLogout } from "./authService";
 
 const baseURL = "http://localhost:3000/api/v1";
 
@@ -25,7 +26,7 @@ axios.interceptors.response.use(
 
       // Handle unauthorized error
       if (response.status === 401) {
-        store.dispatch(logout());
+        handleLogout();
         // Redirect using window.location
         window.location.href = "/";
       }

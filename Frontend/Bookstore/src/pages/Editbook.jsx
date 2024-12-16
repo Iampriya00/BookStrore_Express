@@ -1,6 +1,8 @@
+import { Button } from "@/components/ui/button";
 import { editBookDetails, getBookDetailsByID } from "@/services/authService";
 import { setBook } from "@/store/auth/bookSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import queryClient from "@/utils/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -15,7 +17,8 @@ function Editbook() {
   const bookData = useAppSelector((state) => state.book);
 
   // Fetching book details by id
-  useQuery(`/view-book-details/${id}`, () => getBookDetailsByID(id), {
+  useQuery(`view-book-details/${id}`, () => getBookDetailsByID(id), {
+    refetchOnMount: true,
     onSuccess: (res) => {
       const book = { ...res.book, price: String(res.book.price) };
       dispatch(setBook(book));
@@ -75,6 +78,7 @@ function Editbook() {
     editBookDetails,
     {
       onSuccess: () => {
+        queryClient.invalidateQueries(`view-book-details/${id}`);
         navigate("/books");
       },
     }
@@ -211,6 +215,8 @@ function Editbook() {
                   "Thriller",
                   "Horror-Comedy",
                   "Comedy",
+                  "Tragedy",
+                  "Advanture",
                 ].map((category) => (
                   <div key={category} className="flex items-center space-x-2">
                     <input
@@ -218,9 +224,13 @@ function Editbook() {
                       type="checkbox"
                       value={category}
                       {...register("category")}
-                      className="h-4 w-4 text-indigo-500 focus:ring-indigo-500 border-gray-300 rounded"
+                      className="accent-indigo-500 w-3 h-3 rounded-full transform scale-125 focus:outline-none"
                     />
-                    <label htmlFor={category} className="text-sm text-gray-700">
+
+                    <label
+                      htmlFor={category}
+                      className="text-base text-gray-700"
+                    >
                       {category}
                     </label>
                   </div>
@@ -234,13 +244,13 @@ function Editbook() {
               )}
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={isLoading}
               className="w-full bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               Update Book
-            </button>
+            </Button>
           </form>
         </div>
       </div>

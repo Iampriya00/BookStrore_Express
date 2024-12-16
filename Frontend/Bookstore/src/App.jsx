@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Settings from "./pages/settings";
 import Addnewbook from "./pages/Addnewbook";
 import Editbook from "./pages/Editbook";
+import AllBooksByCategory from "./pages/AllBooksByCategory";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/addnewbook" element={<Addnewbook />} />
         <Route path="/editbook/:id" element={<Editbook />} />
+        <Route path="/books/:category" element={<AllBooksByCategory />} />
       </Routes>
       <Footer />
     </>

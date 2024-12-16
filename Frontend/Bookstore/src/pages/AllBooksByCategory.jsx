@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { allBooks, deleteBook } from "@/services/authService"; // Import the service function
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/auth/cartSlice";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { FaRegEdit } from "react-icons/fa";
 import { cn } from "@/lib/utils";
@@ -10,20 +10,28 @@ import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { useQuery } from "react-query";
 
-function AllBooks() {
+function AllBooksByCategory() {
   // State to hold book data
+  const { category } = useParams();
+
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const { role } = useAppSelector((state) => state.auth.user);
   const booksdata = useAppSelector((state) => state.product);
   const navigate = useNavigate();
-  const filteredBooks = booksdata.filter((book) =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
   useQuery("allbooks", allBooks, {
     refetchOnMount: true,
   });
+  const filteredBooks = booksdata
+    .filter((book) =>
+      book.category
+        .map((cat) => cat.toLowerCase())
+        .includes(category.toLowerCase())
+    )
+    .filter((book) =>
+      book.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   //Add books to the cart
   function handleAddTOCart(book) {
@@ -36,11 +44,6 @@ function AllBooks() {
       };
       dispatch(addToCart(data)); // Dispatch the action to add the book to the cart
     }
-  }
-
-  //Delete books
-  function handleDelete(bookId) {
-    deleteBook(bookId);
   }
 
   return (
@@ -128,4 +131,4 @@ function AllBooks() {
   );
 }
 
-export default AllBooks;
+export default AllBooksByCategory;

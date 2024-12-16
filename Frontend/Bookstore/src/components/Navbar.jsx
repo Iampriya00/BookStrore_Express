@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import navData from "../utils/navBar";
 import { FaCartArrowDown, FaUser } from "react-icons/fa";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { handleLogout } from "@/services/authService";
 import { FaUserAstronaut } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { FaUserTie } from "react-icons/fa6";
+import CategoryDropdown from "./categoryDrp";
 
 function Navbar() {
   const dispatch = useAppDispatch();
@@ -47,18 +48,8 @@ function Navbar() {
               </Link>
             </li>
           ))}
-          <li className="text-white hover:text-gray-400 cursor-pointer">
-            Categories
-          </li>
+          <CategoryDropdown />
         </ul>
-      </div>
-      <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-sm">
-        <input
-          type="search"
-          placeholder="Search"
-          className="w-64 p-2 text-sm bg-transparent outline-none"
-        />
-        <CiSearch className="text-gray-500 text-xl cursor-pointer" />
       </div>
 
       <div>

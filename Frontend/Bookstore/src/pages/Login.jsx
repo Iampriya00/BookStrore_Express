@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginservice } from "@/services/authService";
 import { useAppSelector } from "@/store/hooks";
+import { useMutation } from "react-query";
+import { Button } from "@/components/ui/button";
 
 function Login() {
   const [values, setValues] = useState({
@@ -18,6 +20,8 @@ function Login() {
   const token = useAppSelector((state) => state.auth.token);
   const user = useAppSelector((state) => state.auth.user); // Added to access user role
 
+  const { mutateAsync: loginMutation, isLoading } = useMutation(loginservice);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = values;
@@ -30,7 +34,7 @@ function Login() {
 
     try {
       // Call login service
-      await loginservice(values);
+      await loginMutation(values);
     } catch (error) {
       console.error("Login failed:", error);
       alert("Invalid credentials. Please try again.");
@@ -87,12 +91,13 @@ function Login() {
 
           {/* Submit Button */}
           <div className="mt-6 flex justify-center">
-            <button
+            <Button
               type="submit"
+              loading={isLoading}
               className="bg-zinc-800 text-white px-4 py-2 rounded transition hover:bg-zinc-700"
             >
               Submit
-            </button>
+            </Button>
           </div>
         </div>
       </form>

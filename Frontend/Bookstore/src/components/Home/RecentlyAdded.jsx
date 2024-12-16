@@ -49,7 +49,7 @@ const RecentlyAdded = () => {
       <div className="grid grid-cols-1 gap-4 my-4 sm:grid-cols-3 md:grid-cols-4">
         {recentlyAdded.length > 0
           ? recentlyAdded.map((book) => (
-              <div key={book._id} className="flex flex-col items-center">
+              <div key={book._id} className="flex flex-col">
                 <Link to={`/view-book-details/${book._id}`}>
                   <BookCard data={book} />
                 </Link>

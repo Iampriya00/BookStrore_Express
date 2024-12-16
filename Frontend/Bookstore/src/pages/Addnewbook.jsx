@@ -156,6 +156,8 @@ function AddNewBook() {
               "Thriller",
               "Horror-Comedy",
               "Comedy",
+              "Tragedy",
+              "Advanture",
             ].map((category) => (
               <div key={category} className="flex items-center space-x-2">
                 <input

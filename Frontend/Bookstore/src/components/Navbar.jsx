@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import navData from "../utils/navBar";
 import { FaCartArrowDown, FaUser } from "react-icons/fa";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
-import { logout } from "@/store/auth/authSlice";
 import { Link } from "react-router-dom";
-import { clearCart } from "@/store/auth/cartSlice";
 import { handleLogout } from "@/services/authService";
+import { FaUserAstronaut } from "react-icons/fa";
+import { CiSearch } from "react-icons/ci";
+import { FaUserTie } from "react-icons/fa6";
 
 function Navbar() {
   const dispatch = useAppDispatch();
@@ -46,23 +47,31 @@ function Navbar() {
               </Link>
             </li>
           ))}
+          <li className="text-white hover:text-gray-400 cursor-pointer">
+            Categories
+          </li>
         </ul>
+      </div>
+      <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-sm">
+        <input
+          type="search"
+          placeholder="Search"
+          className="w-64 p-2 text-sm bg-transparent outline-none"
+        />
+        <CiSearch className="text-gray-500 text-xl cursor-pointer" />
       </div>
 
       <div>
         {role === "user" && (
-          <Link to={"/profile"} className="bg-red-600 text-white p-2 rounded">
-            {user.username} Profile
+          <Link to={"/profile"} className=" text-white p-2 rounded">
+            {<FaUserTie />}
           </Link>
         )}
       </div>
       <div>
         {role === "admin" && (
-          <Link
-            to={"/adminDashboard"}
-            className="bg-red-600 text-white p-2 rounded"
-          >
-            {user.username}Profile
+          <Link to={"/adminDashboard"} className=" text-white p-2 rounded">
+            {<FaUserAstronaut />}
           </Link>
         )}
       </div>

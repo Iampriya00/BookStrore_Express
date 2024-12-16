@@ -75,9 +75,22 @@ export const getBookDetailsByID = async (id) => {
 export const editBookDetails = async (data) => {
   try {
     const { data: res } = await axios.post("/updatebook", data);
-
     return res.books;
   } catch (error) {
-    console.log(error);
+    console.error(
+      "Error updating book details:",
+      error.response || error.message
+    );
+  }
+};
+
+export const deleteBook = async (bookId) => {
+  try {
+    const response = await axios.delete(`/deletebook/${bookId}`);
+    console.log(response.data);
+    alert("Book deleted successfully!");
+  } catch (error) {
+    console.error(error);
+    alert("Failed to delete the book. Please try again.");
   }
 };

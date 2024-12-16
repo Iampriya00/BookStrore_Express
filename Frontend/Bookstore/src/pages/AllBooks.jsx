@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { allBooks } from "@/services/authService"; // Import the service function
+import { useEffect } from "react";
+import { allBooks, deleteBook } from "@/services/authService"; // Import the service function
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/auth/cartSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { FaRegEdit } from "react-icons/fa";
 import { cn } from "@/lib/utils";
-import { Pointer } from "lucide-react";
+import { MdDelete } from "react-icons/md";
 
 function AllBooks() {
   // State to hold book data
@@ -15,18 +15,13 @@ function AllBooks() {
   const { role } = useAppSelector((state) => state.auth.user);
   const booksdata = useAppSelector((state) => state.product);
   const navigate = useNavigate();
-  const fetchBooks = async () => {
-    try {
-      await allBooks(); // Call the service function
-    } catch (error) {
-      console.error("Error fetching all books:", error);
-    }
-  };
 
+  //Fetching all the books
   useEffect(() => {
-    fetchBooks(); // Fetch books when the component mounts
+    allBooks();
   }, []);
 
+  //Add books to the cart
   function handleAddTOCart(book) {
     if (!isLoggedIn) {
       navigate("/LogIn");
@@ -38,6 +33,12 @@ function AllBooks() {
       dispatch(addToCart(data)); // Dispatch the action to add the book to the cart
     }
   }
+
+  //Delete books
+  function handleDelete(bookId) {
+    deleteBook(bookId);
+  }
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
@@ -77,11 +78,23 @@ function AllBooks() {
                   <p className="text-sm text-green-600 font-semibold">
                     Price: ${book.price}
                   </p>
+                  <p className="text-sm text-gray-500 font-semibold">
+                    Category:{" "}
+                    {book.category.filter((part) => !!part).join(", ")}
+                  </p>
                 </div>
                 {role === "admin" && (
-                  <Link to={`/editbook/${book._id}`}>
-                    <FaRegEdit style={{ cursor: "pointer" }} />
-                  </Link>
+                  <div className="flex items-start">
+                    <Link to={`/editbook/${book._id}`}>
+                      <FaRegEdit style={{ cursor: "pointer" }} />
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(book._id)}
+                      style={{ cursor: "pointer", marginLeft: "10px" }}
+                    >
+                      <MdDelete />
+                    </button>
+                  </div>
                 )}
               </div>
 

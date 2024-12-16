@@ -1,6 +1,5 @@
 import React from "react";
 import { addNewBook } from "@/services/authService";
-import { useAppSelector } from "@/store/hooks";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 function AddNewBook() {
   const navigate = useNavigate();
+
+  // Add book validation schema using Zod
   const formSchema = z.object({
     url: z.string().min(2, {
       message: "Please enter book image url.",
@@ -25,11 +26,15 @@ function AddNewBook() {
       message: "Please enter book description.",
     }),
     language: z.string().min(1, { message: "Please enter book language." }),
+    category: z
+      .array(z.string())
+      .min(1, { message: "Please select at least one category." }),
   });
+
+  // Set up form handling
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(formSchema),
@@ -40,11 +45,14 @@ function AddNewBook() {
       price: "",
       des: "",
       language: "",
+      category: [],
     },
   });
+
+  // Handle form submission (adding a book)
   const handleAddBooks = async (data) => {
-    await addNewBook(data);
-    navigate("/books");
+    await addNewBook(data); // Add the new book
+    navigate("/books"); // Redirect to the books list page
   };
 
   return (
@@ -127,6 +135,45 @@ function AddNewBook() {
           {errors.language && (
             <p className="text-red-500 text-xs mt-1">
               {errors.language.message}
+            </p>
+          )}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Select Categories:
+          </label>
+          {/* Book Category Checkboxes */}
+          <div className="space-y-2">
+            {[
+              "Fiction",
+              "Non-Fiction",
+              "Science Fiction",
+              "Fantasy",
+              "Mystery",
+              "Biography",
+              "Romantic",
+              "Horror",
+              "Thriller",
+              "Horror-Comedy",
+              "Comedy",
+            ].map((category) => (
+              <div key={category} className="flex items-center space-x-2">
+                <input
+                  id={category}
+                  type="checkbox"
+                  value={category}
+                  {...register("category")}
+                  className="h-4 w-4 text-indigo-500 focus:ring-indigo-500 border-gray-300 rounded"
+                />
+                <label htmlFor={category} className="text-sm text-gray-700">
+                  {category}
+                </label>
+              </div>
+            ))}
+          </div>
+          {errors.category && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.category.message}
             </p>
           )}
         </div>

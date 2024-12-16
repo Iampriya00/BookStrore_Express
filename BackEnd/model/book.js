@@ -26,6 +26,10 @@ const bookSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    category: {
+      type: Array,
+      required: true,
+    },
   },
   { timestamps: true }
 );

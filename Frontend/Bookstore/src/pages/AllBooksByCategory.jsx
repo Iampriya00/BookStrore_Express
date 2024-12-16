@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { allBooks, deleteBook } from "@/services/authService"; // Import the service function
+import { useState } from "react";
+import { allBooks } from "@/services/authService"; // Import the service function
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/auth/cartSlice";
 import { Link, useNavigate, useParams } from "react-router-dom";

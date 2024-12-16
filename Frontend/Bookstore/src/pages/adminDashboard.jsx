@@ -18,17 +18,7 @@ function Profile() {
 
   // Fetch user information
   useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        await userInformation();
-      } catch (error) {
-        console.error(
-          "Error in useEffect while fetching user info:",
-          error.message
-        );
-      }
-    };
-    getUserInfo();
+    userInformation();
   }, []);
 
   return (

@@ -69,56 +69,58 @@ function AllBooks() {
       {filteredBooks && filteredBooks.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredBooks.map((book, index) => (
-            <div
-              key={index}
-              className="border rounded-lg p-4 shadow hover:shadow-lg transition"
-            >
-              <img
-                src={book.url}
-                alt={book.title}
-                className="w-full h-48 object-cover rounded-md mb-4"
-              />
-              <div className="flex justify-between">
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    {book.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-1">
-                    Author: {book.author}
-                  </p>
-                  <p className="text-sm text-gray-500 mb-1">
-                    Added on: {book.dateAdded}
-                  </p>
-                  <p className="text-sm text-green-600 font-semibold">
-                    Price: ${book.price}
-                  </p>
-                  <p className="text-sm text-gray-500 font-semibold">
-                    Category:{" "}
-                    {book.category.filter((part) => !!part).join(", ")}
-                  </p>
-                </div>
-                {role === "admin" && (
-                  <div className="flex items-start">
-                    <Link to={`/editbook/${book._id}`}>
-                      <FaRegEdit style={{ cursor: "pointer" }} />
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(book._id)}
-                      style={{ cursor: "pointer", marginLeft: "10px" }}
-                    >
-                      <MdDelete />
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <button
-                onClick={() => handleAddTOCart(book)}
-                className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            <Link to={`/view-book-details/${book._id}`}>
+              <div
+                key={index}
+                className="border rounded-lg p-4 shadow hover:shadow-lg transition"
               >
-                Add to Cart
-              </button>
-            </div>
+                <img
+                  src={book.url}
+                  alt={book.title}
+                  className="w-full h-48 object-cover rounded-md mb-4"
+                />
+                <div className="flex justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                      {book.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-1">
+                      Author: {book.author}
+                    </p>
+                    <p className="text-sm text-gray-500 mb-1">
+                      Added on: {book.dateAdded}
+                    </p>
+                    <p className="text-sm text-green-600 font-semibold">
+                      Price: ${book.price}
+                    </p>
+                    <p className="text-sm text-gray-500 font-semibold">
+                      Category:{" "}
+                      {book.category.filter((part) => !!part).join(", ")}
+                    </p>
+                  </div>
+                  {role === "admin" && (
+                    <div className="flex items-start">
+                      <Link to={`/editbook/${book._id}`}>
+                        <FaRegEdit style={{ cursor: "pointer" }} />
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(book._id)}
+                        style={{ cursor: "pointer", marginLeft: "10px" }}
+                      >
+                        <MdDelete />
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <button
+                  onClick={() => handleAddTOCart(book)}
+                  className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </Link>
           ))}
         </div>
       ) : (

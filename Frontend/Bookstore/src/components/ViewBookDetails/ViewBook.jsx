@@ -37,16 +37,16 @@ const ViewBook = () => {
     }
   };
   return (
-    <div className="p-6">
+    <div className="p-6 h-[850px]">
       <h1 className="text-3xl font-bold mb-6">Book Details</h1>
       {bookData ? (
-        <div className="flex gap-8 items-start">
+        <div className="flex gap-8 items-center">
           {/* Book Image */}
-          <div className="px-12 py-8 bg-zinc-900 rounded-md">
+          <div className="px-12 py-8 bg-zinc-900 rounded-md max-w-[1000px] ">
             <img
               src={bookData.url}
               alt={bookData.title || "Book Image"}
-              className="w-full h-auto rounded"
+              className="min-w-[200px] max-h-[500px] min-h-[500px] rounded"
             />
           </div>
 

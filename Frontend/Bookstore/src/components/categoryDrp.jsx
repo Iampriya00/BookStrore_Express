@@ -54,7 +54,7 @@ const CategoryDropdown = () => {
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       {/* Dropdown Button */}
-      <ul>
+      <ul className="px-4 py-2 tablet:p-0">
         <li
           className=" cursor-pointer flex text-white hover:text-gray-400"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}

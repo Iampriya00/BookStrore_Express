@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 function SignIn() {
   const [Values, setValues] = useState({
@@ -11,22 +12,30 @@ function SignIn() {
     phone: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
 
   const change = (e) => {
     setValues({ ...Values, [e.target.name]: e.target.value });
   };
 
   const submit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     const { username, email, password, address, phone } = Values;
 
     try {
       if (!username || !email || !password || !address || !phone) {
         alert("Please fill all the fields");
       } else {
-        const response = await axios.post("http://localhost:3000/api/v1/signup", Values);
-        alert("Server Response:", response.data.message);
+        const response = await axios.post(
+          "http://localhost:3000/api/v1/signup",
+          Values
+        );
+        alert("Server Response: " + response.data.message);
         navigate("/login");
       }
     } catch (error) {
@@ -40,6 +49,7 @@ function SignIn() {
       <div className="bg-zinc-500 rounded-lg shadow-md p-8">
         <h1 className="text-zinc-200 text-xl mb-6">Sign In</h1>
         <form onSubmit={submit}>
+          {/* Username */}
           <div className="mb-4">
             <label htmlFor="username" className="text-zinc-400">
               Username
@@ -54,6 +64,8 @@ function SignIn() {
               value={Values.username}
             />
           </div>
+
+          {/* Email */}
           <div className="mb-4">
             <label htmlFor="email" className="text-zinc-400">
               Email
@@ -68,20 +80,31 @@ function SignIn() {
               value={Values.email}
             />
           </div>
-          <div className="mb-4">
+
+          {/* Password */}
+          <div className="mb-4 relative">
             <label htmlFor="password" className="text-zinc-400">
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
-              className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none rounded"
+              className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none rounded pr-10"
               placeholder="Password"
               name="password"
               onChange={change}
               value={Values.password}
             />
+            {/* Toggle Password Visibility */}
+            <span
+              className="absolute right-3 top-14 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+            </span>
           </div>
+
+          {/* Address */}
           <div className="mb-4">
             <label htmlFor="address" className="text-zinc-400">
               Address
@@ -96,6 +119,8 @@ function SignIn() {
               value={Values.address}
             />
           </div>
+
+          {/* Phone */}
           <div className="mb-4">
             <label htmlFor="phone" className="text-zinc-400">
               Phone
@@ -110,10 +135,12 @@ function SignIn() {
               value={Values.phone}
             />
           </div>
+
+          {/* Submit Button */}
           <div className="mt-6 flex justify-center">
             <button
               type="submit"
-              className="bg-zinc-800 text-white px-4 py-2 rounded transition"
+              className="bg-zinc-800 text-white px-4 py-2 rounded transition hover:bg-zinc-700"
             >
               Submit
             </button>

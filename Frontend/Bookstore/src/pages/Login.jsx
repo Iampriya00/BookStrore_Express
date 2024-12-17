@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginservice } from "@/services/authService";
 import { useAppSelector } from "@/store/hooks";
 import { useMutation } from "react-query";
 import { Button } from "@/components/ui/button";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 function Login() {
   const [values, setValues] = useState({
@@ -11,14 +12,20 @@ function Login() {
     password: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
   };
 
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const token = useAppSelector((state) => state.auth.token);
-  const user = useAppSelector((state) => state.auth.user); // Added to access user role
+  const user = useAppSelector((state) => state.auth.user);
 
   const { mutateAsync: loginMutation, isLoading } = useMutation(loginservice);
 
@@ -26,14 +33,12 @@ function Login() {
     e.preventDefault();
     const { email, password } = values;
 
-    // Validate input fields
     if (!email.trim() || !password.trim()) {
       alert("Please fill in all the fields");
       return;
     }
 
     try {
-      // Call login service
       await loginMutation(values);
     } catch (error) {
       console.error("Login failed:", error);
@@ -43,21 +48,20 @@ function Login() {
 
   useEffect(() => {
     if (isLoggedIn && token) {
-      // Redirect based on user role
       if (user?.role === "admin") {
         navigate("/adminDashboard");
       } else {
         navigate("/profile");
       }
     }
-  }, [isLoggedIn, token, user, navigate]); // Ensure `user` and `navigate` are included
+  }, [isLoggedIn, token, user, navigate]);
 
   return (
     <div className="w-[50%] m-auto pt-[10%] h-[80vh]">
       <h1 className="font-bold py-5 text-3xl">Login</h1>
       <form onSubmit={handleSubmit}>
+        {/* Email Field */}
         <div className="mb-6">
-          {/* Email Field */}
           <label className="block text-sm font-medium text-gray-700">
             Email Address
           </label>
@@ -72,33 +76,58 @@ function Login() {
               required
             />
           </div>
+        </div>
 
-          {/* Password Field */}
+        {/* Password Field */}
+        <div>
           <label className="block text-sm font-medium text-gray-700 mt-4">
             Password
           </label>
-          <div className="mt-1">
+          <div className="relative mt-1">
             <input
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Enter your password"
               value={values.password}
               onChange={handleChange}
               required
             />
+            {showPassword ? (
+              <FaRegEyeSlash
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                onClick={togglePasswordVisibility}
+              />
+            ) : (
+              <FaRegEye
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                onClick={togglePasswordVisibility}
+              />
+            )}
           </div>
-
-          {/* Submit Button */}
-          <div className="mt-6 flex justify-center">
-            <Button
-              type="submit"
-              loading={isLoading}
-              className="bg-zinc-800 text-white px-4 py-2 rounded transition hover:bg-zinc-700"
+        </div>
+        <div>
+          <div className="flex justify-between items-center mt-4">
+            <Link to="/signin" className="text-blue-500 hover:underline">
+              New User?
+            </Link>
+            <Link
+              to="/forgotPassword"
+              className="text-gray-500 cursor-pointer hover:underline"
             >
-              Submit
-            </Button>
+              Forgot Password?
+            </Link>
           </div>
+        </div>
+        {/* Submit Button */}
+        <div className="mt-6 flex justify-center">
+          <Button
+            type="submit"
+            loading={isLoading}
+            className="bg-zinc-800 text-white px-4 py-2 rounded transition hover:bg-zinc-700"
+          >
+            Submit
+          </Button>
         </div>
       </form>
     </div>

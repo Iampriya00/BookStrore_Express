@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { allBooks, deleteBook } from "@/services/authService"; // Import the service function
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/auth/cartSlice";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { FaRegEdit } from "react-icons/fa";
 import { cn } from "@/lib/utils";
@@ -16,16 +16,17 @@ function AllBooks() {
   const [searchTerm, setSearchTerm] = useState("");
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const { role } = useAppSelector((state) => state.auth.user);
-  const booksdata = useAppSelector((state) => state.product);
   const navigate = useNavigate();
-  const filteredBooks = booksdata.filter((book) =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  useQuery("allbooks", allBooks, {
+
+  const { data: booksdata = [], isLoading } = useQuery("allbooks", allBooks, {
     refetchOnMount: true,
   });
 
-  //Add books to the cart
+  const filteredBooks = booksdata.filter((book) =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Add books to the cart
   function handleAddTOCart(book) {
     if (!isLoggedIn) {
       navigate("/LogIn");
@@ -38,7 +39,7 @@ function AllBooks() {
     }
   }
 
-  //Delete books
+  // Delete books
   function handleDelete(bookId) {
     deleteBook(bookId);
   }
@@ -68,61 +69,66 @@ function AllBooks() {
           </Link>
         )}
       </div>
-      {filteredBooks && filteredBooks.length > 0 ? (
+
+      {isLoading ? (
+        <p className="text-gray-600">Loading books...</p>
+      ) : filteredBooks.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredBooks.map((book, index) => (
-            <Link to={`/view-book-details/${book._id}`}>
-              <div
-                key={index}
-                className="border rounded-lg p-4 shadow hover:shadow-lg transition"
-              >
-                <img
-                  src={book.url}
-                  alt={book.title}
-                  className="w-full h-48 object-cover rounded-md mb-4"
-                />
-                <div className="flex justify-between">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      {book.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-1">
-                      Author: {book.author}
-                    </p>
-                    <p className="text-sm text-gray-500 mb-1">
-                      Added on: {book.dateAdded}
-                    </p>
-                    <p className="text-sm text-green-600 font-semibold">
-                      Price: ₹ {book.price}
-                    </p>
-                    <p className="text-sm text-gray-500 font-semibold">
-                      Category:{" "}
-                      {book.category.filter((part) => !!part).join(", ")}
-                    </p>
-                  </div>
-                  {role === "admin" && (
-                    <div className="flex items-start">
-                      <Link to={`/editbook/${book._id}`}>
-                        <FaRegEdit style={{ cursor: "pointer" }} />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(book._id)}
-                        style={{ cursor: "pointer", marginLeft: "10px" }}
-                      >
-                        <MdDelete />
-                      </button>
+            <div
+              key={index}
+              className="border rounded-lg p-4 shadow hover:shadow-lg transition"
+            >
+              <Link to={`/view-book-details/${book._id}`}>
+                <div className="flex flex-col">
+                  <img
+                    src={book.url}
+                    alt={book.title}
+                    className="w-full h-48 object-cover rounded-md mb-4"
+                  />
+                  <div className="flex justify-between">
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                        {book.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-1">
+                        Author: {book.author}
+                      </p>
+                      <p className="text-sm text-gray-500 mb-1">
+                        Added on: {book.dateAdded}
+                      </p>
+                      <p className="text-sm text-green-600 font-semibold">
+                        Price: ₹ {book.price}
+                      </p>
+                      <p className="text-sm text-gray-500 font-semibold">
+                        Category:{" "}
+                        {book.category.filter((part) => !!part).join(", ")}
+                      </p>
                     </div>
-                  )}
+                    {role === "admin" && (
+                      <div className="flex items-start">
+                        <Link to={`/editbook/${book._id}`}>
+                          <FaRegEdit style={{ cursor: "pointer" }} />
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(book._id)}
+                          style={{ cursor: "pointer", marginLeft: "10px" }}
+                        >
+                          <MdDelete />
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
+              </Link>
 
-                <button
-                  onClick={() => handleAddTOCart(book)}
-                  className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Add to Cart
-                </button>
-              </div>
-            </Link>
+              <button
+                onClick={() => handleAddTOCart(book)}
+                className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Add to Cart
+              </button>
+            </div>
           ))}
         </div>
       ) : (

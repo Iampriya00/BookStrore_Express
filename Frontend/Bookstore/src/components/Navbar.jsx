@@ -116,10 +116,12 @@ function Navbar() {
               )}
             </div>
           )}
+          {/* Cart Icon */}
           <Link to={isLoggedIn ? "/cart" : "/LogIn"} className="relative">
             <FaCartArrowDown
               size={24}
               color="white"
+              aria-label="Cart"
               className="hover:text-gray-400"
             />
             <span className="absolute top-[-8px] right-[-8px] flex items-center justify-center bg-red-500 text-white text-xs font-bold h-5 w-5 rounded-full">

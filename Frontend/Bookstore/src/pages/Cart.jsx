@@ -28,7 +28,7 @@ function Cart() {
     dispatch(deleteFromCart({ id }));
   }
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "20px" }} className="min-h-screen">
       <div className="flex justify-between m-6">
         <h1 className="text-3xl">Cart</h1>
         <button
@@ -59,7 +59,9 @@ function Cart() {
             />
             <div style={{ flex: "1" }}>
               <h3>{item.title}</h3>
-              <p>Price: ₹{item.price.toFixed(2)}</p>
+              <p>
+                Price: ₹{item.price ? item.price.toFixed(2) : "Not Available"}
+              </p>
             </div>
             <div className="flex items-center justify-center gap-4">
               <button

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function banner() {
   return (
@@ -8,15 +9,16 @@ function banner() {
           <div className="m-auto leftSide">
             <h1 className="text-3xl font-bold">Welcome to our website</h1>
             <p className="py-4">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Veritatis ullam dignissimos neque ipsa doloribus in non, odio et
-              sed pariatur aliquid ratione debitis. Molestiae velit quod cum
-              aperiam accusantium quas!
+              "Discover the World, One Page at a Time" At Book Heaven, <br />
+              we believe that books have the power to transport you to new
+              worlds, ignite your imagination, and transform your life. Whether
+              you're an avid reader or just beginning your journey, we have
+              something for everyone.
             </p>
-            <div>
-              <button className="p-3 border border-sky-500">
+            <div className="mt-3">
+              <Link to="/books" className="p-3 border border-sky-500">
                 Discover Books
-              </button>
+              </Link>
             </div>
           </div>
           <div className="rightSide">

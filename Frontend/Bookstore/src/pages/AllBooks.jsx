@@ -46,7 +46,9 @@ function AllBooks() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold mb-4">All Books Available</h1>
+        <h1 className="text-2xl font-bold mb-4 text-yellow-700">
+          All Books Available
+        </h1>
         <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-sm">
           <input
             type="search"
@@ -91,7 +93,7 @@ function AllBooks() {
                       Added on: {book.dateAdded}
                     </p>
                     <p className="text-sm text-green-600 font-semibold">
-                      Price: ${book.price}
+                      Price: ₹ {book.price}
                     </p>
                     <p className="text-sm text-gray-500 font-semibold">
                       Category:{" "}

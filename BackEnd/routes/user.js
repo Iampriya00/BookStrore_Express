@@ -65,8 +65,8 @@ router.post("/login", async (req, res) => {
     }
 
     const authClaims = {
-      userName: existUser.username,
       id: existUser._id,
+      userName: existUser.username,
     };
 
     const token = jwt.sign(authClaims, "bookStrore7894561230", {

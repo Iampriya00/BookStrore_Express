@@ -2,7 +2,7 @@ import store from "@/store";
 import { logout, setAccessToken, setUser } from "@/store/auth/authSlice";
 import axios from "./axios";
 import { clearProduct, setProduct } from "@/store/auth/productSlice";
-import { clearBook, setBook } from "@/store/auth/bookSlice";
+import { clearBook } from "@/store/auth/bookSlice";
 import { clearCart } from "@/store/auth/cartSlice";
 
 export const loginservice = async (values) => {

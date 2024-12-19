@@ -1,5 +1,4 @@
 import store from "@/store";
-import { logout } from "@/store/auth/authSlice";
 import _axios from "axios";
 import { handleLogout } from "./authService";
 

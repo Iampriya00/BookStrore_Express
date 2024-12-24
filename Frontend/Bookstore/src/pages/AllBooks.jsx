@@ -83,7 +83,7 @@ function AllBooks() {
         <p className="text-gray-600">Loading books...</p>
       ) : filteredBooks.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredBooks.map((book, index) => (
+          {filteredBooks.map((book) => (
             <div
               key={book._id} // Use unique `book._id` for the `key` prop instead of `index`
               className="border rounded-lg p-4 shadow hover:shadow-lg transition relative"

@@ -5,7 +5,7 @@ import {
   removeFromFav,
 } from "@/services/authService";
 import queryClient from "@/utils/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { useMutation, useQuery } from "react-query";
 

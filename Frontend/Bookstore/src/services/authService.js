@@ -94,3 +94,47 @@ export const deleteBook = async (bookId) => {
     alert("Failed to delete the book. Please try again.");
   }
 };
+
+export const addFav = async (bookid) => {
+  try {
+    const response = await axios.put("/addtofavourite", { bookid });
+
+    alert("Book Add to Favourite Successfully");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const fetchFavouriteBooks = async () => {
+  try {
+    const response = await axios.get("/getallfavbooks");
+
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    throw error;
+  }
+};
+
+export const removeFromFav = async (bookid) => {
+  try {
+    const response = await axios.post("/deletefromFav", { bookid });
+
+    alert("Book Removed to Favourite Successfully");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const clearAllFromFav = async () => {
+  try {
+    const response = await axios.post("/clearAllFavourites");
+
+    alert("All Books Removed to Favourite Successfully");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

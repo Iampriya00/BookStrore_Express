@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import navData from "../utils/navBar";
 import {
   FaCartArrowDown,
+  FaHeart,
   FaUser,
   FaUserAstronaut,
   FaUserTie,
@@ -116,6 +117,14 @@ function Navbar() {
               )}
             </div>
           )}
+          <Link to={isLoggedIn ? "/favourite" : "/LogIn"}>
+            <FaHeart
+              size={24}
+              color="white"
+              aria-label="Cart"
+              className="hover:text-gray-400"
+            />
+          </Link>
           {/* Cart Icon */}
           <Link to={isLoggedIn ? "/cart" : "/LogIn"} className="relative">
             <FaCartArrowDown

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { allBooks, deleteBook } from "@/services/authService"; // Import the service function
+import { useState } from "react";
+import { addFav, allBooks, deleteBook } from "@/services/authService"; // Import the service function
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/auth/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
-import { FaRegEdit } from "react-icons/fa";
+import { FaHeart, FaRegEdit } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
@@ -43,13 +43,21 @@ function AllBooks() {
   function handleDelete(bookId) {
     deleteBook(bookId);
   }
+  const handleAddToFav = async (bookid) => {
+    if (!isLoggedIn) {
+      navigate("/LogIn");
+    } else {
+      addFav(bookid);
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold mb-4 text-yellow-700">
+        <h1 className="text-2xl font-bold text-yellow-700">
           All Books Available
         </h1>
+
         <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-sm">
           <input
             type="search"
@@ -60,9 +68,10 @@ function AllBooks() {
           />
           <CiSearch className="text-gray-500 text-xl cursor-pointer" />
         </div>
+
         {role === "admin" && (
           <Link
-            to={"/addnewbook"}
+            to="/addnewbook"
             className={cn(buttonVariants({ variant: "default" }))}
           >
             Add Books
@@ -76,8 +85,8 @@ function AllBooks() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredBooks.map((book, index) => (
             <div
-              key={index}
-              className="border rounded-lg p-4 shadow hover:shadow-lg transition"
+              key={book._id} // Use unique `book._id` for the `key` prop instead of `index`
+              className="border rounded-lg p-4 shadow hover:shadow-lg transition relative"
             >
               <Link to={`/view-book-details/${book._id}`}>
                 <div className="flex flex-col">
@@ -105,14 +114,16 @@ function AllBooks() {
                         {book.category.filter((part) => !!part).join(", ")}
                       </p>
                     </div>
+
                     {role === "admin" && (
                       <div className="flex items-start">
                         <Link to={`/editbook/${book._id}`}>
-                          <FaRegEdit style={{ cursor: "pointer" }} />
+                          <FaRegEdit className="cursor-pointer" />
                         </Link>
                         <button
                           onClick={() => handleDelete(book._id)}
-                          style={{ cursor: "pointer", marginLeft: "10px" }}
+                          className="ml-2"
+                          style={{ cursor: "pointer" }}
                         >
                           <MdDelete />
                         </button>
@@ -122,6 +133,13 @@ function AllBooks() {
                 </div>
               </Link>
 
+              {/* Heart icon positioning */}
+              <FaHeart
+                className="absolute top-[14rem] right-4 text-red-500 cursor-pointer"
+                onClick={() => handleAddToFav(book._id)}
+              />
+
+              {/* Add to Cart Button */}
               <button
                 onClick={() => handleAddTOCart(book)}
                 className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

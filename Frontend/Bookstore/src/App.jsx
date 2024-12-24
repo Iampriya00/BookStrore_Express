@@ -15,6 +15,7 @@ import Settings from "./pages/settings";
 import Addnewbook from "./pages/Addnewbook";
 import Editbook from "./pages/Editbook";
 import AllBooksByCategory from "./pages/AllBooksByCategory";
+import Favourite from "./pages/favourite";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/addnewbook" element={<Addnewbook />} />
         <Route path="/editbook/:id" element={<Editbook />} />
         <Route path="/books/:category" element={<AllBooksByCategory />} />
+        <Route path="/favourite" element={<Favourite />} />
       </Routes>
       <Footer />
     </>

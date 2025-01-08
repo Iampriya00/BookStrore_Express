@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
 import Sidebar from "../components/Profile/sidebar";
 import { userInformation } from "@/services/authService";
@@ -18,17 +18,7 @@ function Profile() {
 
   // Fetch user information
   useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        await userInformation();
-      } catch (error) {
-        console.error(
-          "Error in useEffect while fetching user info:",
-          error.message
-        );
-      }
-    };
-    getUserInfo();
+    userInformation();
   }, []);
 
   return (

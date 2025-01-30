@@ -45,7 +45,7 @@ function SignIn() {
   };
 
   return (
-    <div className="h-auto bg-zinc-900 px-12 py-8 flex items-center justify-center">
+    <div className="h-screen bg-zinc-900 px-12 py-8 flex items-center justify-center">
       <div className="bg-zinc-500 rounded-lg shadow-md p-8">
         <h1 className="text-zinc-200 text-xl mb-6">Sign In</h1>
         <form onSubmit={submit}>

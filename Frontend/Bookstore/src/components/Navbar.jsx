@@ -22,14 +22,14 @@ function Navbar() {
   const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const filteredNavData = isLoggedIn
     ? navData
     : navData.filter((_, index) => index < 3);
 
   return (
-    <nav className="bg-zinc-600 p-4">
+    <nav className="bg-zinc-600 p-4 relative">
       {/* Navbar container */}
       <div className="flex items-center justify-between">
         {/* Logo */}
@@ -41,7 +41,44 @@ function Navbar() {
           />
           <p className="text-2xl font-bold text-white">BookHeaven</p>
         </div>
-
+        {/* Links (Desktop) */}
+        <ul className="hidden lg:flex space-x-4 ">
+          {filteredNavData.map((navItem, index) => (
+            <li key={index}>
+              <Link
+                to={navItem.path}
+                className="text-white hover:text-gray-400"
+              >
+                {navItem.item}
+              </Link>
+            </li>
+          ))}
+          <CategoryDropdown />
+        </ul>
+        {/*Icon */}
+        <div className="flex">
+          {/*Like Button*/}
+          <Link to={isLoggedIn ? "/favourite" : "/LogIn"}>
+            <FaHeart
+              size={24}
+              color="white"
+              aria-label="Cart"
+              className="hover:text-gray-400 me-5"
+            />
+          </Link>
+          {/* Cart Icon */}
+          <Link to={isLoggedIn ? "/cart" : "/LogIn"} className="relative">
+            <FaCartArrowDown
+              size={24}
+              color="white"
+              aria-label="Cart"
+              className="hover:text-gray-400"
+            />
+            <span className="absolute top-[-8px] right-[-8px] flex items-center justify-center bg-red-500 text-white text-xs font-bold h-5 w-5 rounded-full">
+              {totalQuantity}
+            </span>
+          </Link>
+        </div>
         {/* Hamburger Button */}
         <div className="lg:hidden">
           <button
@@ -63,22 +100,6 @@ function Navbar() {
             </svg>
           </button>
         </div>
-
-        {/* Links (Desktop) */}
-        <ul className="hidden lg:flex space-x-4">
-          {filteredNavData.map((navItem, index) => (
-            <li key={index}>
-              <Link
-                to={navItem.path}
-                className="text-white hover:text-gray-400"
-              >
-                {navItem.item}
-              </Link>
-            </li>
-          ))}
-          <CategoryDropdown />
-        </ul>
-
         {/* User Section */}
         <div className="hidden lg:flex items-center space-x-4">
           {role === "user" && (
@@ -117,32 +138,14 @@ function Navbar() {
               )}
             </div>
           )}
-          <Link to={isLoggedIn ? "/favourite" : "/LogIn"}>
-            <FaHeart
-              size={24}
-              color="white"
-              aria-label="Cart"
-              className="hover:text-gray-400"
-            />
-          </Link>
-          {/* Cart Icon */}
-          <Link to={isLoggedIn ? "/cart" : "/LogIn"} className="relative">
-            <FaCartArrowDown
-              size={24}
-              color="white"
-              aria-label="Cart"
-              className="hover:text-gray-400"
-            />
-            <span className="absolute top-[-8px] right-[-8px] flex items-center justify-center bg-red-500 text-white text-xs font-bold h-5 w-5 rounded-full">
-              {totalQuantity}
-            </span>
-          </Link>
         </div>
       </div>
-
       {/* Dropdown for Mobile */}
       {isMenuOpen && (
-        <div className="lg:hidden mt-4">
+        <div
+          className={`lg:hidden mt-4 absolute bg-slate-600 z-20 w-full left-0 transition-transform duration-500 ease-in-out transform>
+          }`}
+        >
           <ul className="flex flex-col space-y-2">
             {filteredNavData.map((navItem, index) => (
               <li key={index}>

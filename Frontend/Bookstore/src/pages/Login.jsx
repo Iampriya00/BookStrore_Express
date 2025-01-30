@@ -57,7 +57,7 @@ function Login() {
   }, [isLoggedIn, token, user, navigate]);
 
   return (
-    <div className="w-[50%] m-auto pt-[10%] h-[80vh]">
+    <div className="w-[50%] m-auto pt-[10%] h-screen">
       <h1 className="font-bold py-5 text-3xl">Login</h1>
       <form onSubmit={handleSubmit}>
         {/* Email Field */}

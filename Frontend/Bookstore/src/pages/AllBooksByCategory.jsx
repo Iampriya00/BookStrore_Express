@@ -47,7 +47,7 @@ function AllBooksByCategory() {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container h-screen mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold mb-4">All Books Available</h1>
         <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-sm">

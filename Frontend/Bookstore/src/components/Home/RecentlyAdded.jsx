@@ -42,7 +42,7 @@ const RecentlyAdded = () => {
 
   return (
     <div className="px-4 mt-8">
-      <h2 className="text-3xl text-center text-yellow-200">
+      <h2 className="text-3xl text-center text">
         Recently Added Books
       </h2>
       {error && <p className="text-center text-red-500 my-4">{error}</p>}

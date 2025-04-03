@@ -2,6 +2,7 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { clearCart, deleteFromCart, updateCart } from "@/store/auth/cartSlice";
 import { MdDelete } from "react-icons/md";
+import { Button } from "@/components/ui/button";
 
 function Cart() {
   const dispatch = useAppDispatch();
@@ -127,6 +128,9 @@ function Cart() {
         ))}
       </div>
       <h2 className="text-end">Grand Total: ₹{totalPrice}</h2>
+      <div className="text-end mt-5">
+      <Button>Buy Now</Button>
+      </div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/auth/cartSlice";
 import { addFav } from "@/services/authService";
+import RecentlyAdded from "../Home/RecentlyAdded";
 
 const ViewBook = () => {
   const [bookData, setBookData] = useState(null);
@@ -98,6 +99,7 @@ const ViewBook = () => {
       ) : (
         <p>Loading book details...</p>
       )}
+      <RecentlyAdded/>
     </div>
   );
 };

@@ -16,6 +16,7 @@ import Addnewbook from "./pages/Addnewbook";
 import Editbook from "./pages/Editbook";
 import AllBooksByCategory from "./pages/AllBooksByCategory";
 import Favourite from "./pages/favourite";
+import ForgotPassword from "./pages/forgotPassword"
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/editbook/:id" element={<Editbook />} />
         <Route path="/books/:category" element={<AllBooksByCategory />} />
         <Route path="/favourite" element={<Favourite />} />
+        <Route path="/forgotPassword" element={<ForgotPassword/>}/>
       </Routes>
       <Footer />
     </>

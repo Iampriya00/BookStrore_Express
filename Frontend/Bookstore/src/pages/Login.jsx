@@ -59,7 +59,7 @@ function Login() {
   return (
     <div className="w-[50%] m-auto pt-[10%] h-screen">
       <h1 className="font-bold py-5 text-3xl">Login</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="bg-[#cccccc36] p-8 rounded-lg">
         {/* Email Field */}
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700">

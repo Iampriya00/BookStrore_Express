@@ -45,9 +45,8 @@ function SignIn() {
   };
 
   return (
-    <div className="h-screen bg-zinc-900 px-12 py-8 flex items-center justify-center">
-      <div className="bg-zinc-500 rounded-lg shadow-md p-8">
-        <h1 className="text-zinc-200 text-xl mb-6">Sign In</h1>
+    <div className="h-screen px-12 py-8 flex items-center justify-center overflow-scroll">
+      <div className="bg-[#cccccc36] p-8 rounded-lg shadow-md">
         <form onSubmit={submit}>
           {/* Username */}
           <div className="mb-4">
@@ -57,7 +56,7 @@ function SignIn() {
             <input
               type="text"
               id="username"
-              className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none rounded"
+              className="w-full mt-2 p-2 outline-none rounded"
               placeholder="Username"
               name="username"
               onChange={change}
@@ -73,7 +72,7 @@ function SignIn() {
             <input
               type="email"
               id="email"
-              className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none rounded"
+              className="w-full mt-2 p-2 outline-none rounded"
               placeholder="Email"
               name="email"
               onChange={change}
@@ -89,7 +88,7 @@ function SignIn() {
             <input
               type={showPassword ? "text" : "password"}
               id="password"
-              className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none rounded pr-10"
+              className="w-full mt-2 p-2 outline-none rounded pr-10"
               placeholder="Password"
               name="password"
               onChange={change}
@@ -112,7 +111,7 @@ function SignIn() {
             <input
               type="text"
               id="address"
-              className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none rounded"
+              className="w-full mt-2 text-zinc-100 p-2 outline-none rounded"
               placeholder="Address"
               name="address"
               onChange={change}
@@ -128,7 +127,7 @@ function SignIn() {
             <input
               type="text"
               id="phone"
-              className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none rounded"
+              className="w-full mt-2 text-zinc-100 p-2 outline-none rounded"
               placeholder="Phone"
               name="phone"
               onChange={change}

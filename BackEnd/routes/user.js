@@ -53,7 +53,11 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("email", email);
+    const allUsers = await User.find();
+    console.log("All Users:", allUsers);
     const existUser = await User.findOne({ email });
+    console.log("User Found:", existUser);
 
     if (!existUser) {
       return res.status(400).json({ message: "Invalid user" });
@@ -103,7 +107,7 @@ router.post("/updateDetails", authenticateToken, async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       id,
       { avatar, username, address, phone },
-      { new: true }
+      { new: true },
     ).select("-password");
 
     if (!updatedUser) {
@@ -120,4 +124,38 @@ router.post("/updateDetails", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/create-admin", async (req, res) => {
+  try {
+    const existingAdmin = await User.findOne({
+      email: "admin@gmail.com",
+    });
+
+    if (existingAdmin) {
+      return res.status(400).json({
+        message: "Admin already exists",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash("Admin12345", 10);
+
+    const admin = new User({
+      username: "admin",
+      email: "admin@gmail.com",
+      password: hashedPassword,
+      address: "India",
+      phone: "9876543210",
+    });
+
+    await admin.save();
+
+    return res.status(201).json({
+      message: "Admin created successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+});
 module.exports = router;

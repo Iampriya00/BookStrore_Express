@@ -23,13 +23,13 @@ function AllBooks() {
   });
 
   const filteredBooks = booksdata.filter((book) =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+    book.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   // Add books to the cart
   function handleAddTOCart(book) {
     if (!isLoggedIn) {
-      navigate("/LogIn");
+      navigate("/login");
     } else {
       const data = {
         ...book,
@@ -45,7 +45,7 @@ function AllBooks() {
   }
   const handleAddToFav = async (bookid) => {
     if (!isLoggedIn) {
-      navigate("/LogIn");
+      navigate("/login");
     } else {
       addFav(bookid);
     }

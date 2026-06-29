@@ -27,16 +27,16 @@ function AllBooksByCategory() {
     .filter((book) =>
       book.category
         .map((cat) => cat.toLowerCase())
-        .includes(category.toLowerCase())
+        .includes(category.toLowerCase()),
     )
     .filter((book) =>
-      book.title.toLowerCase().includes(searchTerm.toLowerCase())
+      book.title.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
   //Add books to the cart
   function handleAddTOCart(book) {
     if (!isLoggedIn) {
-      navigate("/LogIn");
+      navigate("/login");
     } else {
       const data = {
         ...book,

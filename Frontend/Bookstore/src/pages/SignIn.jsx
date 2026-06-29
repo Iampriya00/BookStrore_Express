@@ -33,7 +33,7 @@ function SignIn() {
       } else {
         const response = await axios.post(
           "http://localhost:3000/api/v1/signup",
-          Values
+          Values,
         );
         alert("Server Response: " + response.data.message);
         navigate("/login");

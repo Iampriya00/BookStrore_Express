@@ -7,7 +7,7 @@ import About from "./pages/About";
 import AllBooks from "./pages/AllBooks";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
-import LogIn from "./pages/LogIn";
+import Login from "./pages/Login";
 import SignIn from "./pages/SignIn";
 import BookDetails from "./components/ViewBookDetails/ViewBook";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -16,7 +16,7 @@ import Addnewbook from "./pages/Addnewbook";
 import Editbook from "./pages/Editbook";
 import AllBooksByCategory from "./pages/AllBooksByCategory";
 import Favourite from "./pages/favourite";
-import ForgotPassword from "./pages/forgotPassword"
+import ForgotPassword from "./pages/forgotPassword";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
         <Route path="/books" element={<AllBooks />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/login" element={<LogIn />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/view-book-details/:id" element={<BookDetails />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
@@ -37,7 +37,7 @@ function App() {
         <Route path="/editbook/:id" element={<Editbook />} />
         <Route path="/books/:category" element={<AllBooksByCategory />} />
         <Route path="/favourite" element={<Favourite />} />
-        <Route path="/forgotPassword" element={<ForgotPassword/>}/>
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
       </Routes>
       <Footer />
     </>

@@ -15,7 +15,7 @@ const RecentlyAdded = () => {
     const fetchRecentBooks = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/v1/get-recent-books"
+          "http://localhost:3000/api/v1/get-recent-books",
         );
         setRecentlyAdded(response.data.data);
         setError(null); // Clear any previous error
@@ -30,7 +30,7 @@ const RecentlyAdded = () => {
 
   function handleAddTOCart(book) {
     if (!isLoggedIn) {
-      navigate("/LogIn");
+      navigate("/login");
     } else {
       const data = {
         ...book,
@@ -42,9 +42,7 @@ const RecentlyAdded = () => {
 
   return (
     <div className="px-4 mt-8">
-      <h2 className="text-3xl text-center text">
-        Recently Added Books
-      </h2>
+      <h2 className="text-3xl text-center text">Recently Added Books</h2>
       {error && <p className="text-center text-red-500 my-4">{error}</p>}
       <div className="grid grid-cols-1 gap-4 my-4 sm:grid-cols-3 md:grid-cols-4">
         {recentlyAdded.length > 0

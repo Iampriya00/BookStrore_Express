@@ -65,7 +65,7 @@ function Navbar() {
         {/* Right Icons */}
         <div className="flex items-center gap-5">
           {/* Favourite */}
-          <Link to={isLoggedIn ? "/favourite" : "/LogIn"}>
+          <Link to={isLoggedIn ? "/favourite" : "/login"}>
             <FaHeart
               className="text-white hover:text-pink-400 transition duration-300 hover:scale-125"
               size={22}
@@ -73,7 +73,7 @@ function Navbar() {
           </Link>
 
           {/* Cart */}
-          <Link to={isLoggedIn ? "/cart" : "/LogIn"} className="relative">
+          <Link to={isLoggedIn ? "/cart" : "/login"} className="relative">
             <FaCartArrowDown
               className="text-white hover:text-yellow-300 transition duration-300 hover:scale-125"
               size={22}
@@ -146,7 +146,7 @@ function Navbar() {
                   <div className="absolute right-0 mt-3 w-40 rounded-xl overflow-hidden bg-white shadow-2xl">
                     <ul>
                       <li className="px-4 py-3 hover:bg-slate-100 transition">
-                        <Link to="/LogIn">Log In</Link>
+                        <Link to="/login">Log In</Link>
                       </li>
                       <li className="px-4 py-3 hover:bg-slate-100 transition">
                         <Link to="/SignIn">Sign Up</Link>
@@ -235,7 +235,7 @@ function Navbar() {
               ) : (
                 <li className="p-4 space-y-3">
                   <Link
-                    to="/LogIn"
+                    to="/login"
                     className="block w-full text-center py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition"
                   >
                     Log In

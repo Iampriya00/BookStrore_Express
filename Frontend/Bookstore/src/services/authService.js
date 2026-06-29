@@ -9,7 +9,7 @@ export const loginservice = async (values) => {
   try {
     const { data } = await axios.post(
       "http://localhost:3000/api/v1/login",
-      values
+      values,
     );
     console.log(data);
     store.dispatch(setUser(data.user));
@@ -79,7 +79,7 @@ export const editBookDetails = async (data) => {
   } catch (error) {
     console.error(
       "Error updating book details:",
-      error.response || error.message
+      error.response || error.message,
     );
   }
 };

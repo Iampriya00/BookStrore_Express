@@ -17,7 +17,7 @@ const ViewBook = () => {
     const fetchBooks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/view-book-details/${id}`
+          `http://localhost:3000/api/v1/view-book-details/${id}`,
         );
         setBookData(response.data.book);
       } catch (error) {
@@ -30,7 +30,7 @@ const ViewBook = () => {
 
   const handleAddTOCart = (book) => {
     if (!isLoggedIn) {
-      navigate("/LogIn");
+      navigate("/login");
     } else {
       const data = {
         ...book,
@@ -42,7 +42,7 @@ const ViewBook = () => {
 
   const handleAddToFav = async (bookid) => {
     if (!isLoggedIn) {
-      navigate("/LogIn");
+      navigate("/login");
     } else {
       addFav(bookid);
     }
@@ -99,7 +99,7 @@ const ViewBook = () => {
       ) : (
         <p>Loading book details...</p>
       )}
-      <RecentlyAdded/>
+      <RecentlyAdded />
     </div>
   );
 };

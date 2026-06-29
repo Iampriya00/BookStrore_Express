@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
 import Sidebar from "../components/Profile/sidebar";
 import { userInformation } from "@/services/authService";
-
+import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 function Profile() {
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
@@ -22,52 +22,62 @@ function Profile() {
   }, []);
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <div className="w-1/4 bg-gray-800 text-white p-6">
-        <Sidebar />
-      </div>
+    <div className="flex h-screen  bg-zinc-950">
+      <Sidebar />
       <div className="w-full max-w-4xl mx-auto p-6">
-        <div className="bg-white shadow-lg rounded-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-3">
+        <div className="bg-gradient-to-br from-black/80 via-zinc-900 to-black/80 backdrop-blur-xl shadow-2xl rounded-3xl p-8 border border-white/10">
+          <h1 className="text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 mb-8 border-b pb-4">
             User Profile
           </h1>
 
           {user ? (
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              {/* User Avatar */}
+            <div className="flex flex-col md:flex-row items-center gap-10">
+              {/* Avatar */}
               <div className="relative">
                 <img
                   src={user.avatar || ""}
                   alt="User Avatar"
-                  className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-indigo-500 shadow-lg"
+                  className="w-36 h-36 md:w-44 md:h-44 rounded-full border-4 border-indigo-500 shadow-xl object-cover"
                 />
               </div>
 
-              {/* User Details */}
-              <div className="text-center md:text-left">
-                <p className="text-gray-600 text-xl italic font-bold">
-                  Name:{" "}
-                  <span className="font-medium ms-2">{user.username}</span>
+              {/* Details */}
+              <div className="space-y-4 text-center md:text-left">
+                <p className="flex items-center gap-3 text-gray-100 text-lg font-semibold">
+                  <FaUser className="text-indigo-500" />
+                  Name:
+                  <span className="font-normal text-orange-300">
+                    {user.username}
+                  </span>
                 </p>
-                <p className="text-gray-600 italic text-xl font-bold">
-                  Email: <span className="font-medium ms-2">{user.email}</span>
+
+                <p className="flex items-center gap-3 text-gray-100 text-lg font-semibold">
+                  <FaEnvelope className="text-pink-500" />
+                  Email:
+                  <span className="font-normal text-orange-300">
+                    {user.email}
+                  </span>
                 </p>
-                <p className="text-gray-600 text-xl italic font-bold">
-                  Phone:{" "}
-                  <span className="font-medium ms-2">
+
+                <p className="flex items-center gap-3 text-gray-100 text-lg font-semibold">
+                  <FaPhone className="text-green-500" />
+                  Phone:
+                  <span className="font-normal text-orange-300">
                     {user.phone || "N/A"}
                   </span>
                 </p>
-                <p className="text-gray-600 text-xl italic font-bold">
-                  Address:{" "}
-                  <span className="font-medium ms-2">
+
+                <p className="flex items-center gap-3 text-gray-100 text-lg font-semibold">
+                  <FaMapMarkerAlt className="text-orange-500" />
+                  Address:
+                  <span className="font-normal text-orange-300">
                     {user.address || "N/A"}
                   </span>
                 </p>
               </div>
             </div>
           ) : (
-            <p className="text-gray-600 text-center">
+            <p className="text-gray-500 text-center">
               Loading user information...
             </p>
           )}

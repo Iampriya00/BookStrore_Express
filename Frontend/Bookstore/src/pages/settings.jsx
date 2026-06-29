@@ -5,7 +5,14 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppSelector } from "@/store/hooks";
 import { Link } from "react-router-dom";
-
+import Sidebar from "../components/Profile/sidebar";
+import {
+  FaUser,
+  FaMapMarkerAlt,
+  FaEnvelope,
+  FaPhone,
+  FaImage,
+} from "react-icons/fa";
 function Settings() {
   const user = useAppSelector((state) => state.auth.user);
 
@@ -50,129 +57,96 @@ function Settings() {
     });
   };
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className="w-1/4 bg-gray-800 text-white p-6">
-        <ul className="space-y-4">
-          <li>
-            <Link
-              to="/profile"
-              className="block text-white hover:text-gray-300"
-            >
-              Profile Overview
-            </Link>
-          </li>
-          <li>
-            <Link to="/orders" className="block text-white hover:text-gray-300">
-              Orders
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/settings"
-              className="block text-white hover:text-gray-300"
-            >
-              Account Settings
-            </Link>
-          </li>
-        </ul>
-      </div>
+    <div className="flex h-screen  bg-zinc-950">
+      <Sidebar />
 
-      {/* Edit Profile Form */}
-      <div className="w-3/4 p-6">
-        <div className="max-w-md mx-auto p-4 bg-white shadow-md rounded-lg">
-          <h2 className="text-2xl font-semibold mb-4 text-center">
-            Edit Profile
-          </h2>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-4"
+      <div className="w-full mx-auto p-8 text-white shadow-2xl rounded-3xl border border-white/10">
+        {/* Header */}
+        <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          ✨ Edit Profile
+        </h2>
+
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          {/* Name */}
+          <div>
+            <label className="flex items-center gap-2 text-sm text-gray-300 mb-1">
+              <FaUser className="text-indigo-400" /> Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              {...form.register("name")}
+              placeholder="Enter your name"
+              className="w-full px-4 py-3 bg-zinc-900 text-gray-100 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+            />
+          </div>
+
+          {/* Address */}
+          <div>
+            <label className="flex items-center gap-2 text-sm text-gray-300 mb-1">
+              <FaMapMarkerAlt className="text-purple-400" /> Address
+            </label>
+            <input
+              type="text"
+              id="address"
+              {...form.register("address")}
+              placeholder="Enter your address"
+              className="w-full px-4 py-3 bg-zinc-900 text-gray-100 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="flex items-center gap-2 text-sm text-gray-300 mb-1">
+              <FaEnvelope className="text-pink-400" /> Email
+            </label>
+            <input
+              disabled
+              type="email"
+              id="email"
+              {...form.register("email")}
+              className="w-full px-4 py-3 bg-zinc-800 text-gray-400 border border-white/10 rounded-xl cursor-not-allowed"
+            />
+          </div>
+
+          {/* Phone */}
+          <div>
+            <label className="flex items-center gap-2 text-sm text-gray-300 mb-1">
+              <FaPhone className="text-green-400" /> Phone
+            </label>
+            <input
+              type="text"
+              id="phone"
+              {...form.register("phone")}
+              placeholder="Enter your phone number"
+              className="w-full px-4 py-3 bg-zinc-900 text-gray-100 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            />
+          </div>
+
+          {/* Image */}
+          <div>
+            <label className="flex items-center gap-2 text-sm text-gray-300 mb-1">
+              <FaImage className="text-yellow-400" /> Image URL
+            </label>
+            <input
+              type="text"
+              id="image"
+              {...form.register("image")}
+              placeholder="Enter image URL"
+              className="w-full px-4 py-3 bg-zinc-900 text-gray-100 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
+            />
+          </div>
+
+          {/* Button */}
+          <button
+            type="submit"
+            className="w-full py-3 mt-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white font-semibold rounded-xl shadow-lg hover:scale-[1.02] active:scale-95 transition"
           >
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                {...form.register("name")}
-                placeholder="Enter your name"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="address"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Address
-              </label>
-              <input
-                type="text"
-                id="address"
-                {...form.register("address")}
-                placeholder="Enter your address"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                disabled
-                type="email"
-                id="email"
-                {...form.register("email")}
-                placeholder="Enter your email"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Phone
-              </label>
-              <input
-                type="text"
-                id="phone"
-                {...form.register("phone")}
-                placeholder="Enter your phone number"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="image"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Image URL
-              </label>
-              <input
-                type="text"
-                id="image"
-                {...form.register("image")}
-                placeholder="Enter image URL"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Save Changes
-            </button>
-          </form>
-        </div>
+            💾 Save Changes
+          </button>
+        </form>
       </div>
+      {/* Edit Profile Form */}
     </div>
   );
 }

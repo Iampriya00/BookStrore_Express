@@ -29,25 +29,31 @@ function Navbar() {
     : navData.filter((_, index) => index < 3);
 
   return (
-    <nav className="bg-zinc-600 p-4 relative">
-      {/* Navbar container */}
-      <div className="flex items-center justify-between">
+    <nav className="sticky top-0 z-50 w-full bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 backdrop-blur-xl border-b border-white/10 shadow-[0_0_25px_rgba(99,102,241,0.4)]">
+      {/* Container */}
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
-        <div className="flex items-center">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/5402/5402751.png"
-            alt="Bookstore"
-            className="w-8 h-8 mr-2"
-          />
-          <p className="text-2xl font-bold text-white">BookHeaven</p>
+        <div className="flex items-center gap-3">
+          <div className="bg-white rounded-full p-2 shadow-lg">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/5402/5402751.png"
+              alt="Bookstore"
+              className="w-8 h-8"
+            />
+          </div>
+
+          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-yellow-300 via-orange-400 to-red-400 bg-clip-text text-transparent">
+            BookHeaven
+          </h1>
         </div>
-        {/* Links (Desktop) */}
-        <ul className="hidden lg:flex space-x-4 ">
+
+        {/* Desktop Links */}
+        <ul className="hidden lg:flex items-center gap-8 text-[16px] font-medium">
           {filteredNavData.map((navItem, index) => (
             <li key={index}>
               <Link
                 to={navItem.path}
-                className="text-white hover:text-gray-400"
+                className="relative text-white transition duration-300 hover:text-yellow-300 after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-yellow-400 after:transition-all hover:after:w-full"
               >
                 {navItem.item}
               </Link>
@@ -55,148 +61,196 @@ function Navbar() {
           ))}
           <CategoryDropdown />
         </ul>
-        {/*Icon */}
-        <div className="flex">
-          {/*Like Button*/}
+
+        {/* Right Icons */}
+        <div className="flex items-center gap-5">
+          {/* Favourite */}
           <Link to={isLoggedIn ? "/favourite" : "/LogIn"}>
             <FaHeart
-              size={24}
-              color="white"
-              aria-label="Cart"
-              className="hover:text-gray-400 me-5"
+              className="text-white hover:text-pink-400 transition duration-300 hover:scale-125"
+              size={22}
             />
           </Link>
-          {/* Cart Icon */}
+
+          {/* Cart */}
           <Link to={isLoggedIn ? "/cart" : "/LogIn"} className="relative">
             <FaCartArrowDown
-              size={24}
-              color="white"
-              aria-label="Cart"
-              className="hover:text-gray-400"
+              className="text-white hover:text-yellow-300 transition duration-300 hover:scale-125"
+              size={22}
             />
-            <span className="absolute top-[-8px] right-[-8px] flex items-center justify-center bg-red-500 text-white text-xs font-bold h-5 w-5 rounded-full">
+
+            <span className="absolute -top-2 -right-2 flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold h-5 w-5 rounded-full shadow-lg">
               {totalQuantity}
             </span>
           </Link>
-        </div>
-        {/* Hamburger Button */}
-        <div className="lg:hidden">
-          <button
-            onClick={toggleMenu}
-            className="text-white focus:outline-none"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-        </div>
-        {/* User Section */}
-        <div className="hidden lg:flex items-center space-x-4">
-          {role === "user" && (
-            <Link to={"/profile"} className="text-white p-2 rounded">
-              <FaUserTie size={20} />
-            </Link>
-          )}
-          {role === "admin" && (
-            <Link to={"/adminDashboard"} className="text-white p-2 rounded">
-              <FaUserAstronaut size={20} />
-            </Link>
-          )}
-          {isLoggedIn ? (
+
+          {/* Hamburger */}
+          <div className="lg:hidden">
             <button
-              onClick={() => handleLogout()}
-              className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+              onClick={toggleMenu}
+              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition"
             >
-              Log Out
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
             </button>
-          ) : (
-            <div className="relative">
-              <button onClick={toggleDropdown} className="focus:outline-none">
-                <FaUser color="white" size={24} />
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded shadow-lg z-10">
-                  <ul className="w-32">
-                    <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="/LogIn">Log In</Link>
-                    </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link to="/SignIn">Sign Up</Link>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-      {/* Dropdown for Mobile */}
-      {isMenuOpen && (
-        <div
-          className={`lg:hidden mt-4 absolute bg-slate-600 z-20 w-full left-0 transition-transform duration-500 ease-in-out transform>
-          }`}
-        >
-          <ul className="flex flex-col space-y-2">
-            {filteredNavData.map((navItem, index) => (
-              <li key={index}>
-                <Link
-                  to={navItem.path}
-                  className="block px-4 py-2 text-white hover:bg-gray-700 rounded"
-                >
-                  {navItem.item}
-                </Link>
-              </li>
-            ))}
-            <li className="">
-              <CategoryDropdown />
-            </li>
+          </div>
+
+          {/* User Section */}
+          <div className="hidden lg:flex items-center gap-4">
             {role === "user" && (
-              <Link to={"/profile"} className="block px-4 py-2 text-white">
-                Profile
+              <Link
+                to="/profile"
+                className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition"
+              >
+                <FaUserTie size={18} className="text-white" />
               </Link>
             )}
+
             {role === "admin" && (
               <Link
-                to={"/adminDashboard"}
-                className="block px-4 py-2 text-white"
+                to="/adminDashboard"
+                className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition"
               >
-                Profile
+                <FaUserAstronaut size={18} className="text-white" />
               </Link>
             )}
+
             {isLoggedIn ? (
               <button
-                onClick={() => handleLogout()}
-                className="block px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+                onClick={handleLogout}
+                className="px-5 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold hover:scale-105 transition shadow-lg"
               >
                 Log Out
               </button>
             ) : (
-              <div className="flex flex-col space-y-1">
-                <Link
-                  to="/LogIn"
-                  className="block px-4 py-2 text-white hover:bg-gray-700"
+              <div className="relative">
+                <button
+                  onClick={toggleDropdown}
+                  className="bg-white/10 p-3 rounded-full hover:bg-white/20 transition"
                 >
-                  Log In
-                </Link>
-                <Link
-                  to="/SignIn"
-                  className="block px-4 py-2 text-white hover:bg-gray-700"
-                >
-                  Sign Up
-                </Link>
+                  <FaUser className="text-white" size={20} />
+                </button>
+
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-3 w-40 rounded-xl overflow-hidden bg-white shadow-2xl">
+                    <ul>
+                      <li className="px-4 py-3 hover:bg-slate-100 transition">
+                        <Link to="/LogIn">Log In</Link>
+                      </li>
+                      <li className="px-4 py-3 hover:bg-slate-100 transition">
+                        <Link to="/SignIn">Sign Up</Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
-          </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="lg:hidden mt-3 px-4">
+          {/* Glass Card Container */}
+          <div className="rounded-2xl overflow-hidden bg-slate-900/80 backdrop-blur-2xl border border-white/10 shadow-2xl animate-fadeIn">
+            {/* Header Strip */}
+            <div className="px-5 py-3 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 border-b border-white/10">
+              <h2 className="text-white font-semibold text-sm tracking-wide">
+                Navigation Menu
+              </h2>
+            </div>
+
+            <ul className="flex flex-col">
+              {/* Main Links */}
+              {filteredNavData.map((navItem, index) => (
+                <li key={index}>
+                  <Link
+                    to={navItem.path}
+                    className="flex items-center justify-between px-6 py-4 text-white hover:bg-white/10 transition-all duration-300 group"
+                  >
+                    <span className="group-hover:translate-x-1 transition">
+                      {navItem.item}
+                    </span>
+                    <span className="text-white/30 group-hover:text-white transition">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              ))}
+
+              {/* Category */}
+              <li className="px-6 py-4 border-t border-white/10">
+                <div className="bg-white/5 rounded-xl p-3 hover:bg-white/10 transition">
+                  <CategoryDropdown />
+                </div>
+              </li>
+
+              {/* Role Links */}
+              {role === "user" && (
+                <li>
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-3 px-6 py-4 text-white hover:bg-white/10 transition"
+                  >
+                    <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                    Profile
+                  </Link>
+                </li>
+              )}
+
+              {role === "admin" && (
+                <li>
+                  <Link
+                    to="/adminDashboard"
+                    className="flex items-center gap-3 px-6 py-4 text-white hover:bg-white/10 transition"
+                  >
+                    <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></span>
+                    Admin Dashboard
+                  </Link>
+                </li>
+              )}
+
+              {/* Auth Section */}
+              {isLoggedIn ? (
+                <li className="p-4">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold shadow-lg hover:scale-[1.02] active:scale-95 transition"
+                  >
+                    Log Out
+                  </button>
+                </li>
+              ) : (
+                <li className="p-4 space-y-3">
+                  <Link
+                    to="/LogIn"
+                    className="block w-full text-center py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition"
+                  >
+                    Log In
+                  </Link>
+
+                  <Link
+                    to="/SignIn"
+                    className="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold hover:scale-[1.02] transition"
+                  >
+                    Sign Up
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </div>
         </div>
       )}
     </nav>

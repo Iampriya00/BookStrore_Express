@@ -10,7 +10,7 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import SignIn from "./pages/SignIn";
 import BookDetails from "./components/ViewBookDetails/ViewBook";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboard from "./pages/adminDashboard";
 import Settings from "./pages/settings";
 import Addnewbook from "./pages/Addnewbook";
 import Editbook from "./pages/Editbook";

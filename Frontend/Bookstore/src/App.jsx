@@ -16,7 +16,7 @@ import Addnewbook from "./pages/Addnewbook";
 import Editbook from "./pages/Editbook";
 import AllBooksByCategory from "./pages/AllBooksByCategory";
 import Favourite from "./pages/favourite";
-import ForgotPassword from "./pages/forgotPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (

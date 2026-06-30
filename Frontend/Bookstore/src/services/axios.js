@@ -2,7 +2,7 @@ import store from "@/store";
 import _axios from "axios";
 import { handleLogout } from "./authService";
 
-const baseURL = "http://localhost:3000/api/v1";
+const baseURL = "https://bookstrore-express-1.onrender.com/api/v1";
 
 const axios = _axios.create({
   baseURL,
@@ -32,7 +32,7 @@ axios.interceptors.response.use(
       throw errorObject; // Rethrow error for further handling
     }
     throw error; // Rethrow error if no response object
-  }
+  },
 );
 
 export default axios;

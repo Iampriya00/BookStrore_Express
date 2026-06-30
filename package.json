@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "lucide-react": "^1.22.0",
+    "swiper": "^14.0.1"
+  }
+}

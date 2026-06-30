@@ -1,161 +1,160 @@
 const router = require("express").Router();
-const User = require("../model/user");
 const Books = require("../model/book");
-const jwt = require("jsonwebtoken");
 const authenticateToken = require("./userAuth");
 
-// Middleware to check for required fields in book data
-const validateBookData = (data) => {
-  const requiredFields = [
-    "url",
-    "title",
-    "author",
-    "price",
-    "des",
-    "language",
-    "category",
-  ];
-  for (const field of requiredFields) {
-    if (!data[field]) {
-      return `Missing required field: ${field}`;
-    }
-  }
-  return null;
-};
-
-// Add new book
+// =======================
+// ADD NEW BOOK
+// =======================
 router.post("/addnewbook", authenticateToken, async (req, res) => {
   try {
     const { url, title, author, price, des, language, category } = req.body;
-    const { id } = req.user;
 
-    // Check if user is admin
-    const user = await User.findById(id);
-    if (!user || user.role !== "admin") {
-      return res
-        .status(403)
-        .json({ message: "You are not authorized to add a new book" });
+    // ✅ ADMIN CHECK (FROM JWT - NO DB CALL)
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Not authorized" });
     }
 
-    // Validate book data
-    const validationError = validateBookData(req.body);
-    if (validationError) {
-      return res.status(400).json({ message: validationError });
+    // ✅ VALIDATION
+    if (!url || !title || !author || !price || !des || !language || !category) {
+      return res.status(400).json({ message: "All fields are required" });
     }
 
     const newBook = new Books({
       url,
       title,
       author,
-      price,
+      price: Number(price),
       des,
       language,
-      category,
+      category: Array.isArray(category) ? category : [category],
     });
+
     await newBook.save();
 
-    return res.status(201).json({ message: "New book added successfully" });
+    return res.status(201).json({
+      message: "Book added successfully",
+      book: newBook,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-// Update book
-router.post("/updatebook", authenticateToken, async (req, res) => {
+// =======================
+// UPDATE BOOK
+// =======================
+router.put("/updatebook/:bookId", authenticateToken, async (req, res) => {
   try {
-    const { url, price, des, language, bookId, title, author, category } =
-      req.body;
-    const { id } = req.user;
+    const { bookId } = req.params;
 
-    // Check if user is admin
-    const user = await User.findById(id);
-    if (!user || user.role !== "admin") {
-      return res
-        .status(403)
-        .json({ message: "You are not authorized to update a book" });
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Not authorized" });
     }
 
-    // Validate book data
-    const validationError = validateBookData(req.body);
-    if (validationError) {
-      return res.status(400).json({ message: validationError });
-    }
-
-    const book = await Books.findByIdAndUpdate(
+    const updatedBook = await Books.findByIdAndUpdate(
       bookId,
-      { url, price, des, language, title, author, category },
-      { new: true }
+      {
+        ...req.body,
+        price: req.body.price ? Number(req.body.price) : undefined,
+        category: req.body.category
+          ? Array.isArray(req.body.category)
+            ? req.body.category
+            : [req.body.category]
+          : undefined,
+      },
+      { new: true },
     );
 
-    if (!book) {
+    if (!updatedBook) {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    return res.status(200).json({ message: "Book updated successfully" });
+    return res.status(200).json({
+      message: "Book updated successfully",
+      book: updatedBook,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-// Delete book
+// =======================
+// DELETE BOOK
+// =======================
 router.delete("/deletebook/:bookId", authenticateToken, async (req, res) => {
   try {
-    const { id } = req.user;
-    const user = await User.findById(id);
+    const { bookId } = req.params;
 
-    if (!user || user.role !== "admin") {
-      return res
-        .status(403)
-        .json({ message: "You are not authorized to delete a book" });
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Not authorized" });
     }
 
-    const { bookId } = req.params;
-    const book = await Books.findByIdAndDelete(bookId);
+    const deletedBook = await Books.findByIdAndDelete(bookId);
 
-    if (!book) {
+    if (!deletedBook) {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    return res.status(200).json({ message: "Book deleted successfully" });
+    return res.status(200).json({
+      message: "Book deleted successfully",
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-// Get all books
+// =======================
+// GET ALL BOOKS
+// =======================
 router.get("/allbooks", async (req, res) => {
   try {
     const books = await Books.find().sort({ createdAt: -1 });
-    return res.status(200).json({ status: "Success", data: books });
+
+    return res.status(200).json({
+      status: "success",
+      data: books,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-// Get recent books (limit to 4)
+// =======================
+// GET RECENT BOOKS
+// =======================
 router.get("/get-recent-books", async (req, res) => {
   try {
     const books = await Books.find().sort({ createdAt: -1 }).limit(4);
-    return res.status(200).json({ status: "Success", data: books });
+
+    return res.status(200).json({
+      status: "success",
+      data: books,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-// View book details
+// =======================
+// VIEW SINGLE BOOK
+// =======================
 router.get("/view-book-details/:id", async (req, res) => {
-  const { id } = req.params;
   try {
-    const book = await Books.findById(id);
+    const book = await Books.findById(req.params.id);
+
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
-    return res.status(200).json({ message: "Book found", book });
+
+    return res.status(200).json({
+      message: "Book found",
+      book,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });

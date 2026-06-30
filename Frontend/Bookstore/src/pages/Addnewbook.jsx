@@ -5,37 +5,31 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 
+// =====================
+// OPTIMIZED ZOD SCHEMA
+// =====================
+const formSchema = z.object({
+  url: z.string().url({ message: "Please enter a valid book image URL." }),
+  title: z.string().min(1, { message: "Please enter book title." }),
+  author: z.string().min(1, { message: "Please enter author name." }),
+  price: z.coerce
+    .number({ invalid_type_error: "Price must be a valid number" })
+    .positive({ message: "Price must be greater than 0" }),
+  des: z.string().min(2, { message: "Please enter book description." }),
+  language: z.string().min(1, { message: "Please enter book language." }),
+  category: z
+    .array(z.string())
+    .min(1, { message: "Please select at least one category." }),
+});
+
 function AddNewBook() {
   const navigate = useNavigate();
 
-  // Add book validation schema using Zod
-  const formSchema = z.object({
-    url: z.string().min(2, {
-      message: "Please enter book image url.",
-    }),
-    title: z.string().min(1, {
-      message: "Please enter book title.",
-    }),
-    author: z.string().min(1, {
-      message: "Please enter author name.",
-    }),
-    price: z.string().min(1, {
-      message: "Please enter book price.",
-    }),
-    des: z.string().min(2, {
-      message: "Please enter book description.",
-    }),
-    language: z.string().min(1, { message: "Please enter book language." }),
-    category: z
-      .array(z.string())
-      .min(1, { message: "Please select at least one category." }),
-  });
-
-  // Set up form handling
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,143 +43,170 @@ function AddNewBook() {
     },
   });
 
-  // Handle form submission (adding a book)
+  // =====================
+  // SUBMIT FUNCTION
+  // =====================
   const handleAddBooks = async (data) => {
-    await addNewBook(data); // Add the new book
-    navigate("/books"); // Redirect to the books list page
+    try {
+      // Data is already sanitized and 'price' is converted to a Number by Zod Coercion!
+      await addNewBook(data);
+      reset(); // Resets the form fields
+      navigate("/books");
+    } catch (error) {
+      console.error(
+        "Add Book UI Error:",
+        error.response?.data || error.message,
+      );
+    }
   };
 
   return (
-    <div className="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-semibold mb-4">Add New Book</h1>
-      <form className="space-y-4" onSubmit={handleSubmit(handleAddBooks)}>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Book Image URL:
-          </label>
-          <input
-            type="text"
-            {...register("url")}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          {errors.url && (
-            <p className="text-red-500 text-xs mt-1">{errors.url.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Book Title:
-          </label>
-          <input
-            type="text"
-            {...register("title")}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          {errors.title && (
-            <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Author:
-          </label>
-          <input
-            type="text"
-            {...register("author")}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          {errors.author && (
-            <p className="text-red-500 text-xs mt-1">{errors.author.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Price:
-          </label>
-          <input
-            type="text"
-            {...register("price")}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          {errors.price && (
-            <p className="text-red-500 text-xs mt-1">{errors.price.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Description:
-          </label>
-          <textarea
-            {...register("des")}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          {errors.des && (
-            <p className="text-red-500 text-xs mt-1">{errors.des.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Language:
-          </label>
-          <input
-            type="text"
-            {...register("language")}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          {errors.language && (
-            <p className="text-red-500 text-xs mt-1">
-              {errors.language.message}
-            </p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Select Categories:
-          </label>
-          {/* Book Category Checkboxes */}
-          <div className="space-y-2">
-            {[
-              "Fiction",
-              "Non-Fiction",
-              "Science Fiction",
-              "Fantasy",
-              "Mystery",
-              "Biography",
-              "Romantic",
-              "Horror",
-              "Thriller",
-              "Horror-Comedy",
-              "Comedy",
-              "Tragedy",
-              "Advanture",
-            ].map((category) => (
-              <div key={category} className="flex items-center space-x-2">
-                <input
-                  id={category}
-                  type="checkbox"
-                  value={category}
-                  {...register("category")}
-                  className="h-4 w-4 text-indigo-500 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-                <label htmlFor={category} className="text-sm text-gray-700">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black flex items-center justify-center p-6">
+      <div className="w-full max-w-2xl bg-gray-900/70 backdrop-blur-xl border border-gray-700 rounded-2xl shadow-2xl p-8">
+        <h1 className="text-3xl font-bold text-white mb-6 text-center">
+          Add New Book
+        </h1>
+
+        <form className="space-y-5" onSubmit={handleSubmit(handleAddBooks)}>
+          {/* URL */}
+          <div>
+            <label className="text-gray-300 text-sm">Book Image URL</label>
+            <input
+              type="text"
+              {...register("url")}
+              className="w-full mt-1 p-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+            />
+            {errors.url && (
+              <p className="text-red-400 text-xs mt-1">{errors.url.message}</p>
+            )}
+          </div>
+
+          {/* Title */}
+          <div>
+            <label className="text-gray-300 text-sm">Book Title</label>
+            <input
+              type="text"
+              {...register("title")}
+              className="w-full mt-1 p-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+            />
+            {errors.title && (
+              <p className="text-red-400 text-xs mt-1">
+                {errors.title.message}
+              </p>
+            )}
+          </div>
+
+          {/* Author */}
+          <div>
+            <label className="text-gray-300 text-sm">Author</label>
+            <input
+              type="text"
+              {...register("author")}
+              className="w-full mt-1 p-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+            />
+            {errors.author && (
+              <p className="text-red-400 text-xs mt-1">
+                {errors.author.message}
+              </p>
+            )}
+          </div>
+
+          {/* Price */}
+          <div>
+            <label className="text-gray-300 text-sm">Price</label>
+            <input
+              type="number"
+              step="0.01"
+              {...register("price")}
+              className="w-full mt-1 p-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+            />
+            {errors.price && (
+              <p className="text-red-400 text-xs mt-1">
+                {errors.price.message}
+              </p>
+            )}
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="text-gray-300 text-sm">Description</label>
+            <textarea
+              {...register("des")}
+              rows={4}
+              className="w-full mt-1 p-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+            />
+            {errors.des && (
+              <p className="text-red-400 text-xs mt-1">{errors.des.message}</p>
+            )}
+          </div>
+
+          {/* Language */}
+          <div>
+            <label className="text-gray-300 text-sm">Language</label>
+            <input
+              type="text"
+              {...register("language")}
+              className="w-full mt-1 p-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+            />
+            {errors.language && (
+              <p className="text-red-400 text-xs mt-1">
+                {errors.language.message}
+              </p>
+            )}
+          </div>
+
+          {/* Categories */}
+          <div>
+            <label className="text-gray-300 text-sm block mb-2">
+              Select Categories
+            </label>
+
+            <div className="grid grid-cols-2 gap-2 text-sm text-gray-300">
+              {[
+                "Fiction",
+                "Non-Fiction",
+                "Science Fiction",
+                "Fantasy",
+                "Mystery",
+                "Biography",
+                "Romantic",
+                "Horror",
+                "Thriller",
+                "Comedy",
+                "Tragedy",
+                "Adventure",
+              ].map((category) => (
+                <label
+                  key={category}
+                  className="flex items-center gap-2 bg-gray-800 p-2 rounded-lg hover:bg-gray-700 cursor-pointer transition-colors duration-200"
+                >
+                  <input
+                    type="checkbox"
+                    value={category}
+                    {...register("category")}
+                    className="accent-indigo-500 w-4 h-4 rounded"
+                  />
                   {category}
                 </label>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {errors.category && (
+              <p className="text-red-400 text-xs mt-2">
+                {errors.category.message}
+              </p>
+            )}
           </div>
-          {errors.category && (
-            <p className="text-red-500 text-xs mt-1">
-              {errors.category.message}
-            </p>
-          )}
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          Add Book
-        </button>
-      </form>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 shadow-lg active:scale-[0.99]"
+          >
+            Add Book
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

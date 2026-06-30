@@ -1,16 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = null;
+const initialState = {
+  book: null,
+};
 
 const bookSlice = createSlice({
   name: "book",
   initialState,
   reducers: {
-    setBook: (_state, action) => {
-      return action.payload;
+    // Set selected book
+    setBook: (state, action) => {
+      state.book = action.payload;
     },
-    clearBook: () => {
-      return initialState;
+
+    // Clear selected book
+    clearBook: (state) => {
+      state.book = null;
     },
   },
 });

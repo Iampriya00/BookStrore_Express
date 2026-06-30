@@ -37,7 +37,7 @@ function App() {
         <Route path="/editbook/:id" element={<Editbook />} />
         <Route path="/books/:category" element={<AllBooksByCategory />} />
         <Route path="/favourite" element={<Favourite />} />
-        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
       </Routes>
       <Footer />
     </>

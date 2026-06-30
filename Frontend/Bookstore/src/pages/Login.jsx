@@ -112,7 +112,7 @@ function Login() {
               New User?
             </Link>
             <Link
-              to="/forgotPassword"
+              to="/ForgotPassword"
               className="text-gray-500 cursor-pointer hover:underline"
             >
               Forgot Password?
